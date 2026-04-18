@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+
+<html class="light" lang="tr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Sepet ve Sipariş - Korkmaz Ceviz Çiftliği</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&amp;family=Noto+Serif:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "tertiary-container": "#324b4b",
+                    "surface-dim": "#dbdcc3",
+                    "error": "#ba1a1a",
+                    "inverse-on-surface": "#f2f2d9",
+                    "tertiary-fixed": "#cce8e7",
+                    "primary-container": "#5c4033",
+                    "surface-container-lowest": "#ffffff",
+                    "primary": "#432a1e",
+                    "on-secondary-container": "#4e6d36",
+                    "surface-bright": "#fbfbe2",
+                    "on-primary-fixed-variant": "#5c4033",
+                    "on-tertiary-fixed": "#051f20",
+                    "tertiary": "#1b3434",
+                    "outline": "#82746f",
+                    "background": "#fbfbe2",
+                    "on-secondary": "#ffffff",
+                    "tertiary-fixed-dim": "#b0cccb",
+                    "on-error-container": "#93000a",
+                    "on-tertiary-container": "#9fbaba",
+                    "on-background": "#1b1d0e",
+                    "primary-fixed-dim": "#e6bead",
+                    "secondary-fixed-dim": "#aed18f",
+                    "on-surface": "#1b1d0e",
+                    "primary-fixed": "#ffdbcc",
+                    "on-secondary-fixed-variant": "#314e1b",
+                    "on-primary-container": "#d3ac9c",
+                    "surface-container-low": "#f5f5dc",
+                    "on-surface-variant": "#504440",
+                    "inverse-primary": "#e6bead",
+                    "on-primary": "#ffffff",
+                    "secondary-fixed": "#c9eea9",
+                    "surface-container-high": "#eaead1",
+                    "error-container": "#ffdad6",
+                    "surface": "#fbfbe2",
+                    "secondary": "#486730",
+                    "on-tertiary": "#ffffff",
+                    "on-secondary-fixed": "#0b2000",
+                    "inverse-surface": "#303221",
+                    "on-error": "#ffffff",
+                    "on-primary-fixed": "#2c160b",
+                    "surface-tint": "#765749",
+                    "outline-variant": "#d4c3bd",
+                    "surface-variant": "#e4e4cc",
+                    "on-tertiary-fixed-variant": "#324b4b",
+                    "surface-container-highest": "#e4e4cc",
+                    "secondary-container": "#c9eea9",
+                    "surface-container": "#efefd7"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0.25rem",
+                    "lg": "0.5rem",
+                    "xl": "0.75rem",
+                    "full": "9999px"
+            },
+            "spacing": {},
+            "fontFamily": {
+                    "headline": ["Noto Serif", "serif"],
+                    "body": ["Manrope", "sans-serif"],
+                    "label": ["Manrope", "sans-serif"]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        body { font-family: 'Manrope', sans-serif; background-color: #fbfbe2; color: #1b1d0e; }
+        h1, h2, h3, .font-headline { font-family: 'Noto Serif', serif; letter-spacing: -0.02em; }
+    </style>
+</head>
+<body class="bg-background text-on-background min-h-screen relative overflow-hidden">
+<!-- Blurred Background (representing the store behind the modal) -->
+<div class="fixed inset-0 z-0">
+<div class="w-full h-64 bg-surface-container-low">
+<img alt="Walnut farm background" class="w-full h-full object-cover opacity-20" data-alt="Rustic walnut farm landscape with warm earthy tones, wooden crates, and scattered walnuts under soft natural light" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCZpD-kCKO_fP2lGF62C78j2y49JSsP_dKG_2uJSaUmyldhLgzb6ks5xA4VAr7D4M_1874zcTB4epLzOgw3_9n7LDHc-y2FWuWhLmp-TPqlz8n219ytpl6w_dFlfA35qCuCOdVR5_A6-18faO1HI1R-v5F_MnCp0t-dzCA_izAHXpRSsUtWBJdo32d-1vmvOR84Wao6tQHTJ85STDj0LPUihBj4BpU-yd3N2wbw5NKlqc1HkhgqT1OfZD7fvJohN7T71bIZad-_RwM"/>
+</div>
+<div class="max-w-7xl mx-auto px-6 py-12">
+<h1 class="font-headline text-5xl mb-8">Ürünlerimiz</h1>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+<!-- Dummy Product Cards for background context -->
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20">
+<div class="h-48 bg-surface-container-low rounded-lg mb-4"></div>
+<h3 class="font-headline text-xl mb-2">Kabuklu Ceviz</h3>
+<p class="text-secondary font-semibold">180 TL / kg</p>
+</div>
+<div class="bg-surface-container-lowest p-6 rounded-xl border border-outline-variant/20">
+<div class="h-48 bg-surface-container-low rounded-lg mb-4"></div>
+<h3 class="font-headline text-xl mb-2">İç Ceviz</h3>
+<p class="text-secondary font-semibold">450 TL / kg</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Dark Overlay -->
+<div class="fixed inset-0 bg-on-background/40 backdrop-blur-sm z-40"></div>
+<!-- Main Modal Container -->
+<div class="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 md:p-12">
+<div class="w-full max-w-5xl bg-surface rounded-xl shadow-2xl flex flex-col md:flex-row overflow-hidden relative">
+<!-- Left Side: Cart Sidebar (Visual) -->
+<div class="w-full md:w-5/12 bg-surface-container-low border-r border-outline-variant/20 p-8 flex flex-col">
+<div class="flex items-center justify-between mb-8">
+<h2 class="font-headline text-3xl text-primary">Sepetim</h2>
+<span class="material-symbols-outlined text-outline" data-icon="shopping_bag">shopping_bag</span>
+</div>
+<!-- Cart Items List -->
+<div class="flex-1 overflow-y-auto space-y-6 mb-8 pr-2">
+<!-- Item 1 -->
+<div class="flex items-start gap-4">
+<div class="w-20 h-20 bg-surface rounded-lg overflow-hidden shrink-0">
+<img alt="Kabuklu Ceviz" class="w-full h-full object-cover" data-alt="Close up of whole walnuts in shells sitting on a rustic wooden table with soft side lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDId0q5WR1A4DJIqYnw4yeKdWYw5pBLTYzVVbduR_Nh1bbz-eO3eREU45_elA_QMurVQapzo4Z-XqDYshlL2t_o4xT6w7pJJJnLNx9a6CHwbEM8wHNARs0TbbJP7IEEMTe0q11JfvgapfjT8s6syaPfe2KFFwka6cXG3VN_Dp2fh8yY2wsuPblphuR7YZu66P-49bKlhiqaRZu8npIZJt61ku9hIbk8rB0BBnwb8RE-jrEmOr8DI-YnVuS5TdKsYKxDMa_EhVFbdu0"/>
+</div>
+<div class="flex-1">
+<h3 class="font-headline text-lg text-on-surface mb-1">Kabuklu Ceviz (Yeni Mahsul)</h3>
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-secondary-container text-on-secondary-container text-xs px-2 py-1 rounded-full">Organik</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<span class="text-sm text-on-surface-variant">5 kg</span>
+<span class="font-semibold text-secondary">900 TL</span>
+</div>
+</div>
+</div>
+<!-- Item 2 -->
+<div class="flex items-start gap-4">
+<div class="w-20 h-20 bg-surface rounded-lg overflow-hidden shrink-0">
+<img alt="İç Ceviz" class="w-full h-full object-cover" data-alt="Shelled walnut halves arranged neatly on a piece of natural linen fabric" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC9IOYy1pPvazB9KAhiHUGzedBdpNWydQhCW0lzYNZphAMZ8B35l33-nTigUNXScBuntNDlJdsZK6OEXVJeKV4dbk06kHB0_LUtdQEJAmrSiSE5jtExHQQ9oAM1jCpj9kgE4vOZU7ttZNAcM8F3UTauHcJRWDE1T0DaqwrM5lpYl_Q0Cm46UtgbO2DVZB-d2eC8qImrS5UY24wfUfYRuinaJA5Z8TvJLQHjR-0K7-5Kj6olUySOajqs_3C9anzmY1Z4wkF_q-PAYSU"/>
+</div>
+<div class="flex-1">
+<h3 class="font-headline text-lg text-on-surface mb-1">Kelebek İç Ceviz</h3>
+<div class="flex items-center gap-2 mb-2">
+<span class="bg-secondary-container text-on-secondary-container text-xs px-2 py-1 rounded-full">1. Kalite</span>
+</div>
+<div class="flex items-center justify-between mt-2">
+<span class="text-sm text-on-surface-variant">2 kg</span>
+<span class="font-semibold text-secondary">900 TL</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Cart Summary -->
+<div class="pt-6 border-t border-outline-variant/30">
+<div class="flex justify-between text-on-surface-variant mb-2">
+<span>Toplam Ağırlık</span>
+<span>7 kg</span>
+</div>
+<div class="flex justify-between items-center mt-4">
+<span class="font-headline text-xl">Toplam Tutar</span>
+<span class="font-headline text-2xl text-primary">1.800 TL</span>
+</div>
+<p class="text-xs text-outline mt-2 text-right">Kargo ücreti dahil değildir.</p>
+</div>
+</div>
+<!-- Right Side: Checkout Form -->
+<div class="w-full md:w-7/12 bg-surface-container-lowest p-8 md:p-12 flex flex-col justify-center relative">
+<!-- Close Button -->
+<button class="absolute top-6 right-6 text-on-surface-variant hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-3xl" data-icon="close">close</span>
+</button>
+<div class="max-w-md mx-auto w-full">
+<h2 class="font-headline text-4xl text-on-surface mb-2">Siparişi Tamamla</h2>
+<p class="text-on-surface-variant mb-8 font-body">Bilgilerinizi girin, siparişinizi WhatsApp üzerinden hızlıca onaylayalım.</p>
+<form class="space-y-6">
+<!-- Full Name Input -->
+<div>
+<label class="block text-sm font-medium text-on-surface mb-2 font-body" for="fullName">Ad Soyad</label>
+<input class="w-full bg-surface-container-low border border-outline-variant/20 rounded-lg px-4 py-3 text-on-surface focus:bg-surface-container-lowest focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all font-body" id="fullName" name="fullName" placeholder="Örn: Ahmet Yılmaz" type="text"/>
+</div>
+<!-- Phone Number Input -->
+<div>
+<label class="block text-sm font-medium text-on-surface mb-2 font-body" for="phone">Telefon Numarası</label>
+<div class="flex relative">
+<span class="absolute left-4 top-1/2 -translate-y-1/2 text-on-surface-variant font-body">+90</span>
+<input class="w-full bg-surface-container-low border border-outline-variant/20 rounded-lg pl-12 pr-4 py-3 text-on-surface focus:bg-surface-container-lowest focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all font-body" id="phone" name="phone" placeholder="5XX XXX XX XX" type="tel"/>
+</div>
+</div>
+<!-- Delivery Note (Optional) -->
+<div>
+<label class="block text-sm font-medium text-on-surface mb-2 font-body" for="note">Sipariş Notu (İsteğe bağlı)</label>
+<textarea class="w-full bg-surface-container-low border border-outline-variant/20 rounded-lg px-4 py-3 text-on-surface focus:bg-surface-container-lowest focus:border-secondary focus:ring-1 focus:ring-secondary outline-none transition-all font-body resize-none" id="note" name="note" placeholder="Örn: Hafta sonu teslim edilsin." rows="2"></textarea>
+</div>
+<!-- Action Button -->
+<div class="pt-4">
+<button class="w-full bg-primary hover:bg-primary-container text-on-primary rounded-xl py-4 px-6 flex items-center justify-center gap-3 transition-all duration-300 transform hover:-translate-y-[2px] shadow-sm" type="button">
+<!-- using chat icon as a proxy for messaging/whatsapp since we can't use custom icons easily without altering json restrictions, but we are generating from scratch here, though following json icon rules. We'll use forum/chat -->
+<span class="material-symbols-outlined" data-icon="forum" data-weight="fill" style="font-variation-settings: 'FILL' 1;">forum</span>
+<span class="font-body font-semibold text-lg tracking-wide">WhatsApp ile Sipariş Ver</span>
+</button>
+<p class="text-xs text-center text-outline mt-4 font-body">Siparişiniz WhatsApp destek hattımıza (0505 214 91 97) iletilecektir.</p>
+</div>
+</form>
+</div>
+</div>
+</div>
+</div>
+</body></html>
