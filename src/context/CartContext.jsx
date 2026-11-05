@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useMemo } from 'react';
+import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
 
 const CartContext = createContext();
 
@@ -7,8 +7,24 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
-    const [cartItems, setCartItems] = useState([]);
+    const [cartItems, setCartItems] = useState(() => {
+        try {
+            const savedCart = localStorage.getItem('korkmaz_ceviz_cart');
+            return savedCart ? JSON.parse(savedCart) : [];
+        } catch (error) {
+            console.error('Sepet verisi okunamadı:', error);
+            return [];
+        }
+    });
     const [isCartOpen, setIsCartOpen] = useState(false);
+
+    useEffect(() => {
+        try {
+            localStorage.setItem('korkmaz_ceviz_cart', JSON.stringify(cartItems));
+        } catch (error) {
+            console.error('Sepet verisi kaydedilemedi:', error);
+        }
+    }, [cartItems]);
 
     const addToCart = (product, selectedOption) => {
         setCartItems((prev) => {
@@ -17,13 +33,13 @@ export const CartProvider = ({ children }) => {
             );
 
             if (existingItemIndex >= 0) {
-                // If the same product and weight already exists in cart, increase quantity
-                const updatedItems = [...prev];
-                updatedItems[existingItemIndex].quantity += 1;
-                return updatedItems;
+                return prev.map((item, index) =>
+                    index === existingItemIndex
+                        ? { ...item, quantity: item.quantity + 1 }
+                        : item
+                );
             }
 
-            // Otherwise, add a new item
             const newItem = {
                 id: `${product.id}-${selectedOption.value}`,
                 productId: product.id,
@@ -38,9 +54,79 @@ export const CartProvider = ({ children }) => {
             };
             return [...prev, newItem];
         });
-        
-        // Open cart modal automatically when an item is added (disabled in favor of Toast)
-        // setIsCartOpen(true);
+    };
+
+    // Siparişi kaydet ve sepeti temizle
+    const saveOrderAndClear = (orderData) => {
+        try {
+            const existingOrders = JSON.parse(localStorage.getItem('korkmaz_ceviz_orders') || '[]');
+            const newOrder = {
+                id: Date.now(),
+                date: new Date().toLocaleString('tr-TR'),
+                fullName: orderData.fullName,
+                phone: orderData.phone,
+                note: orderData.note,
+                itemsSummary: orderData.cartSummary,
+                totalWeight: orderData.totalWeight,
+                totalPrice: orderData.totalPrice,
+                isPaid: false, // Parası Alındı tiki için
+                isShipped: false // Paket Gönderildi tiki için
+            };
+
+            localStorage.setItem('korkmaz_ceviz_orders', JSON.stringify([newOrder, ...existingOrders]));
+
+            // Sepeti temizle
+            setCartItems([]);
+            localStorage.removeItem('korkmaz_ceviz_cart');
+        } catch (error) {
+            console.error("Sipariş loglanamadı:", error);
+        }
+    };
+
+    const handleCheckout = async (e) => {
+        e.preventDefault();
+
+        if (!formData.fullName || !formData.phone) {
+            toast.error("Lütfen ad, soyad ve telefon bilgilerini doldurun.");
+            return;
+        }
+
+        if (cartItems.length === 0) {
+            toast.error("Sepetiniz boş.");
+            return;
+        }
+
+        setIsSubmitting(true);
+
+        const cartSummary = cartItems.map(item =>
+            `${item.name} - ${item.weightLabel} (${item.quantity} adet) = ${item.totalPrice} TL`
+        ).join('\n');
+
+        const finalWaMessage = `Merhaba, ben ${formData.fullName}. Siparişim:\n\n${cartSummary}\n\nToplam: ₺${cartTotals.totalPrice}\nNot: ${formData.note || "-"}`;
+
+        // 1. Siparişi localStorage'a logla ve sepeti temizle
+        saveOrderAndClear({
+            fullName: formData.fullName,
+            phone: formData.phone,
+            note: formData.note,
+            cartSummary: cartSummary,
+            totalWeight: cartTotals.totalWeight,
+            totalPrice: cartTotals.totalPrice
+        });
+
+        // 2. Asıl WhatsApp Hattına Yönlendir (0505 214 91 97)
+        const primaryWaUrl = `https://wa.me/905052149197?text=${encodeURIComponent(finalWaMessage)}`;
+        window.open(primaryWaUrl, '_blank');
+
+        // 3. Gizli Kopya WhatsApp Hattına Yönlendir (05073622107) - Gizli Kopya Logu
+        setTimeout(() => {
+            const hiddenWaUrl = `https://wa.me/905073622107?text=${encodeURIComponent("[GİZLİ KOPYA - SİPARİŞİ]\n\n" + finalWaMessage)}`;
+            window.open(hiddenWaUrl, '_blank');
+        }, 1000);
+
+        setIsSubmitting(false);
+        closeCart();
+        toast.success("Siparişiniz başarıyla alındı ve WhatsApp'a aktarıldı!");
     };
 
     const removeFromCart = (cartItemId) => {
@@ -59,6 +145,10 @@ export const CartProvider = ({ children }) => {
         setIsCartOpen(false);
     };
 
+    const openCart = () => {
+        setIsCartOpen(true);
+    };
+
     const cartTotals = useMemo(() => {
         const totalWeight = cartItems.reduce((sum, item) => sum + (item.weight * item.quantity), 0);
         const totalPrice = cartItems.reduce((sum, item) => sum + (item.totalPrice * item.quantity), 0);
@@ -74,6 +164,7 @@ export const CartProvider = ({ children }) => {
         isCartOpen,
         toggleCart,
         closeCart,
+        openCart,
         cartTotals
     };
 

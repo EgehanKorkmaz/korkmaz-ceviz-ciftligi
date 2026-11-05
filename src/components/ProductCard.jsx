@@ -8,7 +8,7 @@ import img5kg from '../images/ceviz5kg.png';
 
 // Custom Sack Icon Component
 const SackIcon = ({ size, weight, label, imageSrc, onClick }) => (
-    <div 
+    <div
         onClick={() => onClick(weight)}
         className="flex flex-col items-center justify-center cursor-pointer group transition-transform active:scale-90 hover:scale-105"
         title={`${label} Ekle (${weight}kg)`}
@@ -24,7 +24,8 @@ const SackIcon = ({ size, weight, label, imageSrc, onClick }) => (
 );
 
 const ProductCard = ({ product }) => {
-    const { addToCart } = useCart();
+    // 1. useCart'tan openCart fonksiyonunu da çekiyoruz:
+    const { addToCart, openCart } = useCart();
     const [tempWeight, setTempWeight] = useState(0);
 
     const handleAddWeight = (weight) => {
@@ -37,33 +38,45 @@ const ProductCard = ({ product }) => {
 
     const handleAddToCart = () => {
         if (tempWeight === 0) return;
-        
-        // Sepete Ekle - tempWeight üzerinden option oluşturuluyor
+
         addToCart(product, { value: tempWeight, label: `${tempWeight} kg` });
-        
-        // Toast Bildirimi
+
+        // 2. Bildirime tıklanınca sepeti aç ve bildirimi kapat:
         toast.success(
-            <span className="flex items-center gap-2">
-                <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
-                <span><b>{tempWeight}kg</b> {product.name} sepetinize eklendi!</span>
-            </span>,
+            (t) => (
+                <div
+                    onClick={() => {
+                        toast.dismiss(t.id);
+                        openCart();
+                    }}
+                    className="flex items-center gap-3 cursor-pointer group"
+                    title="Sepeti görüntülemek için tıklayın"
+                >
+                    <span className="material-symbols-outlined text-primary text-lg">check_circle</span>
+                    <div className="flex flex-col">
+                        <span><b>{tempWeight}kg</b> {product.name} sepetinize eklendi!</span>
+                        <span className="text-xs text-secondary underline group-hover:text-primary transition-colors mt-0.5">
+                            Sepete Git &rarr;
+                        </span>
+                    </div>
+                </div>
+            ),
             {
                 duration: 4000,
-                icon: null, 
+                icon: null,
             }
         );
 
-        // Sıfırla
         setTempWeight(0);
     };
 
     return (
         <div className="bg-surface-container-lowest rounded-xl overflow-hidden shadow-[0_10px_40px_rgb(27,29,14,0.04)] border border-outline-variant/20 flex flex-col">
             <div className="relative h-64">
-                <img 
-                    src={product.image} 
-                    alt={product.imageAlt} 
-                    className="w-full h-full object-cover" 
+                <img
+                    src={product.image}
+                    alt={product.imageAlt}
+                    className="w-full h-full object-cover"
                 />
                 {product.tag && (
                     <div className={`absolute top-4 left-4 font-body text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1 shadow-sm ${product.tag.colorClass}`}>
@@ -83,7 +96,7 @@ const ProductCard = ({ product }) => {
                         Toplam: ₺{product.price * tempWeight}
                     </span>
                 </div>
-                
+
                 {/* Miktar Seçimi - Çuval İkonları */}
                 <div className="mb-6 bg-surface-container-low/50 p-4 rounded-xl border border-outline-variant/10">
                     <label className="block font-body text-xs text-on-surface-variant mb-4 text-center">Miktar Eklemek İçin Çuvallara Tıklayın</label>
@@ -92,20 +105,20 @@ const ProductCard = ({ product }) => {
                         <SackIcon size={56} weight={3} label="Orta" imageSrc={img3kg} onClick={handleAddWeight} />
                         <SackIcon size={56} weight={1} label="Küçük" imageSrc={img1kg} onClick={handleAddWeight} />
                     </div>
-                    
+
                     <div className="text-center font-body min-h-[36px] flex items-center justify-center">
                         {tempWeight > 0 ? (
                             <div className="flex items-center justify-center gap-2">
                                 <span className="text-base font-medium text-on-surface-variant">Seçilen: </span>
                                 <span className="text-2xl font-black text-primary tracking-tight">{tempWeight}kg</span>
-                                <button 
+                                <button
                                     onClick={handleSubtractWeight}
                                     className="text-sm bg-error/10 text-error hover:bg-error hover:text-on-error w-8 h-8 rounded-full flex items-center justify-center font-bold transition-all shadow-sm ml-2 active:scale-95"
                                     title="1kg Çıkar"
                                 >
                                     -1
                                 </button>
-                                <button 
+                                <button
                                     onClick={() => setTempWeight(0)}
                                     className="text-sm bg-surface-variant/50 text-on-surface-variant hover:bg-error hover:text-on-error w-8 h-8 rounded-full flex items-center justify-center transition-all shadow-sm ml-1 active:scale-95"
                                     title="Seçimi Temizle"
@@ -117,14 +130,17 @@ const ProductCard = ({ product }) => {
                     </div>
                 </div>
 
-                {/* Sepete Ekle Butonu - Animasyonlu */}
-                <div className={`transition-all duration-300 ease-in-out origin-top ${tempWeight > 0 ? 'opacity-100 scale-100 h-[48px] mt-2' : 'opacity-0 scale-95 h-0 overflow-hidden mt-0'}`}>
-                    <button 
+                <div className="h-[48px] mt-2">
+                    <button
                         onClick={handleAddToCart}
-                        className="w-full h-full bg-primary text-on-primary font-body font-bold rounded-xl hover:bg-primary-container hover:text-on-primary-container transition-colors shadow-sm flex items-center justify-center gap-2"
+                        disabled={tempWeight === 0}
+                        className={`w-full h-full font-body font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${tempWeight > 0
+                                ? 'bg-primary text-on-primary hover:bg-primary-container hover:text-on-primary-container shadow-sm cursor-pointer'
+                                : 'bg-surface-container-low text-outline border border-outline-variant/20 cursor-not-allowed opacity-70'
+                            }`}
                     >
-                        <span className="material-symbols-outlined">shopping_cart</span>
-                        Sepete Ekle
+                        <span className="material-symbols-outlined text-[20px]">shopping_cart</span>
+                        {tempWeight > 0 ? `Sepete Ekle (${tempWeight} kg)` : 'Önce Miktar Seçin'}
                     </button>
                 </div>
             </div>

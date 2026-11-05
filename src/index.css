@@ -5,13 +5,21 @@
 @layer base {
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: 100px; /* Offset for fixed navbar */
+    scroll-padding-top: 100px;
   }
+
   body {
-    @apply bg-surface text-on-surface font-body antialiased;
+    @apply bg-surface text-on-surface antialiased;
+    font-family: 'Inter', sans-serif;
   }
-  h1, h2, h3 {
-    @apply font-headline;
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Plus Jakarta Sans', sans-serif;
     letter-spacing: -0.02em;
   }
 }
