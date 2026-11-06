@@ -151,9 +151,9 @@ const AdminPanel = () => {
             image: 'https://images.unsplash.com/photo-1563412885-139e4045ec56?auto=format&fit=crop&w=800&q=80',
             imageAlt: 'Korkmaz Ceviz Çiftliği Doğal Ceviz',
             tag: {
-                label: 'Yeni Hasat',
-                icon: 'eco',
-                colorClass: TAG_COLORS[0].value
+                label: 'Satışta',
+                icon: 'verified',
+                colorClass: 'bg-secondary text-on-primary'
             }
         });
     };
