@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState, useMemo, useEffect } from 'react';
+import { products as initialProducts } from '../data/products';
 
 const CartContext = createContext();
 
@@ -7,6 +8,60 @@ export const useCart = () => {
 };
 
 export const CartProvider = ({ children }) => {
+    // 1. Dinamik Ürün Listesi (Yönetici Panelinden düzenlenebilir)
+    const [products, setProducts] = useState(() => {
+        try {
+            const savedProducts = localStorage.getItem('korkmaz_ceviz_products');
+            return savedProducts ? JSON.parse(savedProducts) : initialProducts;
+        } catch (error) {
+            return initialProducts;
+        }
+    });
+
+    // 2. Sipariş Logları (İsim - Soyisim - KG - TL - Tikler)
+    const [orders, setOrders] = useState(() => {
+        try {
+            const savedOrders = localStorage.getItem('korkmaz_ceviz_orders');
+            return savedOrders ? JSON.parse(savedOrders) : [];
+        } catch (error) {
+            return [];
+        }
+    });
+
+    // Senin Google Apps Script Web App URL'n doğrudan varsayılan olarak tanımlandı:
+    const DEFAULT_SHEET_URL = "https://script.google.com/macros/s/AKfycbz4Dc2D13BjzsNKd_Bxja8oBQ1J1Hb6RY97bP9yOseh7q4X416KdChAy_rX4WrsIsaV/exec";
+
+    const [sheetWebhookUrl, setSheetWebhookUrl] = useState(() => {
+        return localStorage.getItem('korkmaz_ceviz_sheet_url') || import.meta.env.VITE_GOOGLE_SHEETS_WEBHOOK_URL || DEFAULT_SHEET_URL;
+    });
+
+    const [isAdminOpen, setIsAdminOpen] = useState(false);
+
+    // Gizli URL (#yonetim) ve Klavye Kısayolu (Ctrl + Shift + Y) dinleyicisi
+    useEffect(() => {
+        const checkHash = () => {
+            if (window.location.hash === '#yonetim' || window.location.pathname === '/yonetim') {
+                setIsAdminOpen(true);
+            }
+        };
+
+        const handleKeyDown = (e) => {
+            if (e.ctrlKey && e.shiftKey && (e.key === 'Y' || e.key === 'y')) {
+                e.preventDefault();
+                setIsAdminOpen(prev => !prev);
+            }
+        };
+
+        checkHash();
+        window.addEventListener('hashchange', checkHash);
+        window.addEventListener('keydown', handleKeyDown);
+
+        return () => {
+            window.removeEventListener('hashchange', checkHash);
+            window.removeEventListener('keydown', handleKeyDown);
+        };
+    }, []);
+
     const [cartItems, setCartItems] = useState(() => {
         try {
             const savedCart = localStorage.getItem('korkmaz_ceviz_cart');
@@ -17,6 +72,24 @@ export const CartProvider = ({ children }) => {
         }
     });
     const [isCartOpen, setIsCartOpen] = useState(false);
+
+    // Ürünler değiştiğinde kaydet
+    useEffect(() => {
+        try {
+            localStorage.setItem('korkmaz_ceviz_products', JSON.stringify(products));
+        } catch (error) {
+            console.error('Ürünler kaydedilemedi:', error);
+        }
+    }, [products]);
+
+    // Siparişler değiştiğinde kaydet
+    useEffect(() => {
+        try {
+            localStorage.setItem('korkmaz_ceviz_orders', JSON.stringify(orders));
+        } catch (error) {
+            console.error('Siparişler kaydedilemedi:', error);
+        }
+    }, [orders]);
 
     useEffect(() => {
         try {
@@ -56,31 +129,121 @@ export const CartProvider = ({ children }) => {
         });
     };
 
+    // Google Sheets'ten başlangıçta verileri çek (GET)
+    const fetchFromGoogleSheets = async (urlToUse = sheetWebhookUrl) => {
+        if (!urlToUse) return;
+        try {
+            const response = await fetch(urlToUse);
+            const data = await response.json();
+            if (data.status === 'success') {
+                if (Array.isArray(data.orders)) {
+                    setOrders(data.orders);
+                }
+                if (Array.isArray(data.products) && data.products.length > 0) {
+                    setProducts(data.products);
+                }
+            }
+        } catch (err) {
+            console.error("Google Sheets veri çekme hatası:", err);
+        }
+    };
+
+    // Sayfa ilk yüklendiğinde veya sheetWebhookUrl değiştiğinde tabloyu oku
+    useEffect(() => {
+        if (sheetWebhookUrl) {
+            fetchFromGoogleSheets(sheetWebhookUrl);
+        }
+    }, [sheetWebhookUrl]);
+
+    const syncToGoogleSheets = async (action, payload) => {
+        const targetUrl = sheetWebhookUrl || DEFAULT_SHEET_URL;
+        if (!targetUrl) return;
+
+        try {
+            await fetch(targetUrl, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action, ...payload })
+            });
+            console.log(`Google Sheets (${action}) gönderildi.`);
+        } catch (err) {
+            console.error("Google Sheets senkronizasyon hatası:", err);
+        }
+    };
+
     // Siparişi kaydet ve sepeti temizle
     const saveOrderAndClear = (orderData) => {
-        try {
-            const existingOrders = JSON.parse(localStorage.getItem('korkmaz_ceviz_orders') || '[]');
-            const newOrder = {
-                id: Date.now(),
-                date: new Date().toLocaleString('tr-TR'),
-                fullName: orderData.fullName,
-                phone: orderData.phone,
-                note: orderData.note,
-                itemsSummary: orderData.cartSummary,
-                totalWeight: orderData.totalWeight,
-                totalPrice: orderData.totalPrice,
-                isPaid: false, // Parası Alındı tiki için
-                isShipped: false // Paket Gönderildi tiki için
-            };
+        const newOrder = {
+            id: Date.now(),
+            date: new Date().toLocaleString('tr-TR'),
+            fullName: orderData.fullName,
+            phone: orderData.phone,
+            address: orderData.address || '-',
+            locationUrl: orderData.locationUrl || '',
+            note: orderData.note || '-',
+            itemsSummary: orderData.cartSummary,
+            totalWeight: orderData.totalWeight,
+            totalPrice: orderData.totalPrice,
+            isPaid: false,    // Parası Alındı
+            isShipped: false  // Paket Gönderildi
+        };
 
-            localStorage.setItem('korkmaz_ceviz_orders', JSON.stringify([newOrder, ...existingOrders]));
+        setOrders(prev => [newOrder, ...prev]);
+        setCartItems([]);
+        localStorage.removeItem('korkmaz_ceviz_cart');
 
-            // Sepeti temizle
-            setCartItems([]);
-            localStorage.removeItem('korkmaz_ceviz_cart');
-        } catch (error) {
-            console.error("Sipariş loglanamadı:", error);
-        }
+        // Google E-Tablolar'a otomatik gönder
+        syncToGoogleSheets('NEW_ORDER', { order: newOrder });
+    };
+
+    // Sipariş Durumu Güncelleme (Parası Alındı / Paket Gönderildi tikleri)
+    const toggleOrderStatus = (orderId, field) => {
+        setOrders(prev => prev.map(order => {
+            if (order.id === orderId) {
+                const updated = { ...order, [field]: !order[field] };
+                syncToGoogleSheets('UPDATE_ORDER_STATUS', { id: orderId, isPaid: updated.isPaid, isShipped: updated.isShipped });
+                return updated;
+            }
+            return order;
+        }));
+    };
+
+    const deleteOrder = (orderId) => {
+        setOrders(prev => prev.filter(order => order.id !== orderId));
+        syncToGoogleSheets('DELETE_ORDER', { id: orderId });
+    };
+
+    // Ürün Ekleme / Güncelleme / Silme
+    const saveProduct = (productData) => {
+        setProducts(prev => {
+            const exists = prev.some(p => p.id === productData.id);
+            const updatedProducts = exists
+                ? prev.map(p => p.id === productData.id ? productData : p)
+                : [...prev, productData];
+
+            syncToGoogleSheets('SYNC_PRODUCTS', { products: updatedProducts });
+            return updatedProducts;
+        });
+    };
+
+    const deleteProduct = (productId) => {
+        setProducts(prev => {
+            const updatedProducts = prev.filter(p => p.id !== productId);
+            syncToGoogleSheets('SYNC_PRODUCTS', { products: updatedProducts });
+            return updatedProducts;
+        });
+    };
+
+    const resetProductsToDefault = () => {
+        setProducts(initialProducts);
+        localStorage.removeItem('korkmaz_ceviz_products');
+        syncToGoogleSheets('SYNC_PRODUCTS', { products: initialProducts });
+    };
+
+    const saveSheetUrl = (url) => {
+        setSheetWebhookUrl(url);
+        localStorage.setItem('korkmaz_ceviz_sheet_url', url);
     };
 
     const handleCheckout = async (e) => {
@@ -161,11 +324,30 @@ export const CartProvider = ({ children }) => {
         addToCart,
         removeFromCart,
         clearCart,
+        saveOrderAndClear,
         isCartOpen,
         toggleCart,
         closeCart,
         openCart,
-        cartTotals
+        cartTotals,
+        // Yönetici Paneli & Ürün State'leri:
+        products,
+        saveProduct,
+        deleteProduct,
+        resetProductsToDefault,
+        orders,
+        toggleOrderStatus,
+        deleteOrder,
+        isAdminOpen,
+        openAdmin: () => setIsAdminOpen(true),
+        closeAdmin: () => {
+            setIsAdminOpen(false);
+            if (window.location.hash === '#yonetim') {
+                window.history.replaceState(null, '', window.location.pathname);
+            }
+        },
+        sheetWebhookUrl,
+        saveSheetUrl
     };
 
     return (

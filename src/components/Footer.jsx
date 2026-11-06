@@ -46,8 +46,8 @@ const Footer = () => {
 
             </div>
 
-            {/* Designer Tag */}
-            <div className="w-full mt-16 border-t border-outline-variant/10 flex justify-center">
+            {/* Designer Tag & Yönetim Butonu */}
+            <div className="w-full mt-16 border-t border-outline-variant/10 flex items-center justify-center gap-6">
                 <a
                     href="https://egehankorkmaz.me/"
                     target="_blank"
@@ -56,8 +56,8 @@ const Footer = () => {
                     style={{ color: '#8b5cf6', textShadow: '0 0 1px rgba(255,255,255,0.5)' }}
                 >
                     <span className="material-symbols-outlined text-base">laptop_mac</span>
-                    <DecryptedText 
-                        text="Egehan Korkmaz tarafından tasarlanmıştır" 
+                    <DecryptedText
+                        text="Egehan Korkmaz tarafından tasarlanmıştır"
                         animateOn="hover"
                         speed={60}
                         maxIterations={15}

@@ -7,6 +7,7 @@ import ProductGrid from './components/ProductGrid';
 import HarvestCalendar from './components/HarvestCalendar';
 import Footer from './components/Footer';
 import CartModal from './components/CartModal';
+import AdminPanel from './components/AdminPanel'; // <-- 1. Import edildi mi?
 
 function App() {
   return (
@@ -14,10 +15,7 @@ function App() {
       <div className="bg-surface text-on-surface font-body antialiased kraft-texture min-h-screen flex flex-col relative">
         <Toaster
           position="top-right"
-          containerStyle={{
-            top: 80, // Navbar'ın hemen altında konumlanır
-            right: 24,
-          }}
+          containerStyle={{ top: 80, right: 24 }}
           toastOptions={{
             className: 'font-body text-sm font-semibold',
             style: {
@@ -36,6 +34,7 @@ function App() {
         </main>
         <Footer />
         <CartModal />
+        <AdminPanel /> {/* <-- 2. Buraya eklendi mi? */}
       </div>
     </CartProvider>
   );

@@ -1,6 +1,6 @@
 import React from 'react';
 import ProductCard from './ProductCard';
-import { products } from '../data/products';
+import { useCart } from '../context/CartContext';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from 'swiper/modules';
@@ -9,6 +9,8 @@ import 'swiper/css';
 import 'swiper/css/pagination';
 
 const ProductGrid = () => {
+    const { products } = useCart();
+
     return (
         <section id="products" className="w-full bg-surface-container-low py-20 px-6 mt-12 rounded-t-[3rem]">
             <div className="max-w-screen-2xl mx-auto">
