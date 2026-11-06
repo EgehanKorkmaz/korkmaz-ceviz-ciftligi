@@ -1,48 +1,53 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
 import toast from 'react-hot-toast';
-
-const TAG_COLORS = [
-    { label: 'Yeşil (Hasat / Taze)', value: 'bg-secondary-container text-on-secondary-container' },
-    { label: 'Kırmızı (Tükenmek Üzere)', value: 'bg-error-container text-on-error-container' },
-    { label: 'Krem / Özel (Özel Hasat)', value: 'bg-surface-variant text-on-surface-variant border border-outline-variant/30' }
-];
+import { PRODUCT_TAG_PRESETS, getTagConfig } from '../data/products';
 
 const AdminPanel = () => {
     const {
         isAdminOpen, closeAdmin,
         products, saveProduct, deleteProduct, resetProductsToDefault,
         orders, toggleOrderStatus, deleteOrder,
-        sheetWebhookUrl, saveSheetUrl
+        sheetWebhookUrl, saveSheetUrl,
+        verifyAdminPin // <-- Context'ten çekiyoruz
     } = useCart();
 
-    const [activeTab, setActiveTab] = useState('orders'); // 'orders' | 'products' | 'sheets'
+    const [activeTab, setActiveTab] = useState('orders');
     const [editingProduct, setEditingProduct] = useState(null);
     const [tempSheetUrl, setTempSheetUrl] = useState(sheetWebhookUrl || '');
 
-    // Şifre koruması state'leri (Varsayılan şifre: 1999 veya .env üzerinden VITE_ADMIN_PIN)
-    const ADMIN_PIN = import.meta.env.VITE_ADMIN_PIN || '163162';
+    // Frontend'de hiçbir şifre saklanmaz! Sadece sunucu onaylı token kontrol edilir:
     const [isAuthenticated, setIsAuthenticated] = useState(() => {
-        return sessionStorage.getItem('korkmaz_admin_auth') === 'true';
+        return !!sessionStorage.getItem('korkmaz_admin_token');
     });
     const [pinInput, setPinInput] = useState('');
+    const [isVerifying, setIsVerifying] = useState(false);
+    const [lockMessage, setLockMessage] = useState('');
 
     if (!isAdminOpen) return null;
 
-    const handlePinSubmit = (e) => {
+    const handlePinSubmit = async (e) => {
         e.preventDefault();
-        if (pinInput === ADMIN_PIN) {
+        if (!pinInput.trim() || isVerifying) return;
+
+        setIsVerifying(true);
+        setLockMessage('');
+
+        const result = await verifyAdminPin(pinInput);
+        setIsVerifying(false);
+
+        if (result.authorized) {
             setIsAuthenticated(true);
-            sessionStorage.setItem('korkmaz_admin_auth', 'true');
             setPinInput('');
-            toast.success('Yönetici girişi başarılı!');
+            toast.success('Güvenli yönetici girişi başarılı!');
         } else {
-            toast.error('Hatalı yönetici şifresi!');
             setPinInput('');
+            setLockMessage(result.message || 'Hatalı yönetici şifresi!');
+            toast.error(result.message || 'Hatalı şifre!');
         }
     };
 
-    // Eğer şifre henüz girilmediyse sadece Şifre Ekranını göster:
+    // Eğer şifre henüz doğrulanmadıysa Brute-Force korumalı Şifre Ekranını göster:
     if (!isAuthenticated) {
         return (
             <div className="fixed inset-0 z-50 flex items-center justify-center bg-on-background/60 backdrop-blur-sm p-4">
@@ -54,33 +59,41 @@ const AdminPanel = () => {
                         <span className="material-symbols-outlined">close</span>
                     </button>
                     <div className="w-12 h-12 bg-primary/10 text-primary rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="material-symbols-outlined text-2xl">lock</span>
+                        <span className="material-symbols-outlined text-2xl">shield_lock</span>
                     </div>
-                    <h2 className="font-headline text-2xl font-bold text-on-surface mb-1">Yönetici Girişi</h2>
-                    <p className="text-xs text-on-surface-variant mb-6">Panele erişmek için yönetici şifrenizi girin.</p>
+                    <h2 className="font-headline text-2xl font-bold text-on-surface mb-1">Güvenli Yönetici Girişi</h2>
+                    <p className="text-xs text-on-surface-variant mb-6">
+                        Brute-force koruması aktiftir. 5 hatalı denemede sistem 15 dakika kilitlenir.
+                    </p>
+
+                    {lockMessage && (
+                        <div className="mb-4 p-3 rounded-xl bg-error-container text-on-error-container text-xs font-semibold">
+                            {lockMessage}
+                        </div>
+                    )}
 
                     <form onSubmit={handlePinSubmit} className="space-y-4">
                         <input
                             type="password"
                             value={pinInput}
                             onChange={(e) => setPinInput(e.target.value)}
-                            placeholder="Şifre..."
+                            placeholder="Yönetici Şifresi..."
                             autoFocus
-                            className="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-outline-variant/30 text-center text-lg tracking-widest focus:border-secondary outline-none"
+                            disabled={isVerifying}
+                            className="w-full px-4 py-3 rounded-xl bg-surface-container-low border border-outline-variant/30 text-center text-base tracking-widest focus:border-secondary outline-none disabled:opacity-50"
                         />
                         <button
                             type="submit"
-                            className="w-full py-3 rounded-xl bg-primary text-on-primary font-semibold text-sm hover:opacity-95 transition-opacity cursor-pointer"
+                            disabled={isVerifying || !pinInput.trim()}
+                            className="w-full py-3 rounded-xl bg-primary text-on-primary font-semibold text-sm hover:opacity-95 transition-opacity cursor-pointer disabled:opacity-50"
                         >
-                            Giriş Yap
+                            {isVerifying ? 'Doğrulanıyor...' : 'Giriş Yap'}
                         </button>
                     </form>
                 </div>
             </div>
         );
     }
-
-    if (!isAdminOpen) return null;
 
     // Bilgisayardan seçilen resmi otomatik küçültüp (Canvas) Base64'e çevirme
     const handleImageUpload = (e) => {
@@ -366,17 +379,24 @@ const AdminPanel = () => {
                                                 />
                                             </div>
                                             <div>
-                                                <label className="block text-xs font-semibold mb-1">Etiket Yazısı</label>
-                                                <input
-                                                    type="text"
-                                                    value={editingProduct.tag?.label || ''}
-                                                    onChange={e => setEditingProduct({
-                                                        ...editingProduct,
-                                                        tag: { ...(editingProduct.tag || {}), label: e.target.value, icon: editingProduct.tag?.icon || 'star' }
-                                                    })}
-                                                    className="w-full px-3 py-2 rounded-lg bg-surface border border-outline-variant/30 text-sm"
-                                                    placeholder="Örn: Hasat Döneminde"
-                                                />
+                                                <label className="block text-xs font-semibold mb-1">Ürün Durumu (Etiket)</label>
+                                                <select
+                                                    value={editingProduct.tag?.label || 'Satışta'}
+                                                    onChange={e => {
+                                                        const selectedPreset = getTagConfig(e.target.value);
+                                                        setEditingProduct({
+                                                            ...editingProduct,
+                                                            tag: selectedPreset
+                                                        });
+                                                    }}
+                                                    className="w-full px-3 py-2 rounded-lg bg-surface border border-outline-variant/30 text-sm cursor-pointer"
+                                                >
+                                                    {PRODUCT_TAG_PRESETS.map((preset) => (
+                                                        <option key={preset.label} value={preset.label}>
+                                                            {preset.label} {!preset.inStock ? '(Satışa Kapalı)' : ''}
+                                                        </option>
+                                                    ))}
+                                                </select>
                                             </div>
                                         </div>
 

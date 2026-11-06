@@ -155,18 +155,39 @@ export const CartProvider = ({ children }) => {
         }
     }, [sheetWebhookUrl]);
 
+    // Google Sheets üzerinden şifre doğrulama (Sunucu tarafı Brute-Force korumalı)
+    const verifyAdminPin = async (pinInput) => {
+        const targetUrl = sheetWebhookUrl || DEFAULT_SHEET_URL;
+        try {
+            const response = await fetch(targetUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify({ action: 'VERIFY_PIN', adminPin: pinInput })
+            });
+            const result = await response.json();
+            if (result.authorized) {
+                sessionStorage.setItem('korkmaz_admin_token', pinInput);
+            }
+            return result;
+        } catch (err) {
+            console.error("Doğrulama hatası:", err);
+            return { authorized: false, message: 'Sunucuya bağlanılamadı.' };
+        }
+    };
+
+    // Google Sheets'e veri gönderme (Yönetici işlemleri için adminPin otomatik eklenir)
     const syncToGoogleSheets = async (action, payload) => {
         const targetUrl = sheetWebhookUrl || DEFAULT_SHEET_URL;
         if (!targetUrl) return;
 
+        const adminPin = sessionStorage.getItem('korkmaz_admin_token') || '';
+
         try {
             await fetch(targetUrl, {
                 method: 'POST',
-                mode: 'no-cors',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify({ action, ...payload })
+                body: JSON.stringify({ action, adminPin, ...payload })
             });
-            console.log(`Google Sheets (${action}) gönderildi.`);
         } catch (err) {
             console.error("Google Sheets senkronizasyon hatası:", err);
         }
@@ -347,7 +368,8 @@ export const CartProvider = ({ children }) => {
             }
         },
         sheetWebhookUrl,
-        saveSheetUrl
+        saveSheetUrl,
+        verifyAdminPin
     };
 
     return (

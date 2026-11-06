@@ -12,9 +12,9 @@ const ProductGrid = () => {
     const { products } = useCart();
 
     return (
-        <section id="products" className="w-full bg-surface-container-low py-20 px-6 mt-12 rounded-t-[3rem]">
+        <section id="products" className="w-full bg-surface-container-low py-14 px-6 mt-6 rounded-t-[3rem]">
             <div className="max-w-screen-2xl mx-auto">
-                <div className="text-center mb-16">
+                <div className="text-center mb-10">
                     <h2 className="font-headline text-4xl md:text-5xl font-bold text-on-surface mb-4" style={{ letterSpacing: "-0.02em" }}>Ürünlerimiz</h2>
                     <p className="font-body text-on-surface-variant max-w-2xl mx-auto">
                         Toprağın bereketini sofranıza taşıyan, farklı ihtiyaçlara yönelik özenle seçilmiş ceviz çeşitlerimiz.

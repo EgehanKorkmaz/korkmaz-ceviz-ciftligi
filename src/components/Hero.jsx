@@ -2,7 +2,7 @@ import React from 'react';
 
 const Hero = () => {
     return (
-        <section className="relative w-full max-w-screen-2xl mx-auto px-6 py-12 md:py-24 flex flex-col md:flex-row items-center gap-12">
+        <section className="relative w-full max-w-screen-2xl mx-auto px-6 py-12 md:py-12 flex flex-col md:flex-row items-center gap-12">
             <div className="w-full md:w-5/12 z-10 md:pr-12">
                 <h1 className="font-headline text-5xl md:text-7xl font-bold text-on-surface leading-tight tracking-tighter mb-6" style={{ letterSpacing: "-0.02em" }}>
                     Doğrudan Bahçeden,<br />
@@ -27,7 +27,7 @@ const Hero = () => {
                 <div className="absolute -bottom-6 -left-6 bg-surface-container-lowest p-4 rounded-xl shadow-[0_10px_40px_rgb(27,29,14,0.06)] border border-outline-variant/20 flex items-center gap-3">
                     <span className="material-symbols-outlined text-secondary" style={{ fontVariationSettings: "'FILL' 1" }}>eco</span>
                     <div>
-                        <p className="font-headline font-bold text-on-surface text-sm">2024 Hasadı</p>
+                        <p className="font-headline font-bold text-on-surface text-sm">Yeni Mahsul / Taze Hasat</p>
                         <p className="font-body text-xs text-on-surface-variant">Sınırlı Stok</p>
                     </div>
                 </div>

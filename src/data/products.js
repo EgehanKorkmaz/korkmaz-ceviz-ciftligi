@@ -1,3 +1,57 @@
+export const PRODUCT_TAG_PRESETS = [
+  {
+    label: "Satışta",
+    icon: "verified",
+    colorClass: "bg-secondary text-on-primary",
+    inStock: true
+  },
+  {
+    label: "Hasat Döneminde",
+    icon: "eco",
+    colorClass: "bg-secondary-container text-on-secondary-container",
+    inStock: true
+  },
+  {
+    label: "Özel Hasat",
+    icon: "star",
+    colorClass: "bg-surface-variant text-on-surface-variant border border-outline-variant/40",
+    inStock: true
+  },
+  {
+    label: "Tükenmek Üzere",
+    icon: "hourglass_bottom",
+    colorClass: "bg-error-container text-on-error-container animate-pulse",
+    inStock: true
+  },
+  {
+    label: "Tükendi",
+    icon: "block",
+    colorClass: "bg-on-surface/80 text-surface",
+    inStock: false
+  },
+  {
+    label: "Seneye Hasadı Bekleniyor",
+    icon: "event_upcoming",
+    colorClass: "bg-surface-container-low text-on-surface-variant border border-outline-variant/40",
+    inStock: false
+  }
+];
+
+// Etiket adına göre doğru ikon, renk ve stok durumunu otomatik bulan yardımcı fonksiyon
+export const getTagConfig = (tagOrLabel) => {
+  const label = typeof tagOrLabel === 'string' ? tagOrLabel : tagOrLabel?.label;
+  if (!label) return null;
+  const found = PRODUCT_TAG_PRESETS.find(
+    (preset) => preset.label.toLowerCase() === label.trim().toLowerCase()
+  );
+  return found || {
+    label,
+    icon: tagOrLabel?.icon || "eco",
+    colorClass: tagOrLabel?.colorClass || "bg-secondary-container text-on-secondary-container",
+    inStock: true
+  };
+};
+
 export const products = [
   {
     id: "susurluk-yas-ceviz",
