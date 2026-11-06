@@ -27,7 +27,7 @@ const HARVEST_STEPS = [
     },
     {
         id: 'storage',
-        title: 'Saklama & Satış',
+        title: 'Satış & Saklama',
         period: 'Kasım - Kış',
         desc: 'İdeal nem ve ısıda depolama, kuru ceviz gönderimi.',
         icon: 'inventory_2',
@@ -88,10 +88,10 @@ const HarvestCalendar = () => {
                                     >
                                         {/* İkon Dairesi */}
                                         <div className={`w-12 h-12 rounded-full flex items-center justify-center z-10 md:mb-4 shrink-0 transition-all duration-500 ${isActive
-                                                ? 'bg-secondary text-on-primary shadow-lg ring-4 ring-secondary/20 scale-110'
-                                                : isPassed
-                                                    ? 'bg-surface border-2 border-secondary text-secondary'
-                                                    : 'bg-surface border-2 border-outline-variant/40 text-on-surface-variant opacity-70'
+                                            ? 'bg-secondary text-on-primary shadow-lg ring-4 ring-secondary/20 scale-110'
+                                            : isPassed
+                                                ? 'bg-surface border-2 border-secondary text-secondary'
+                                                : 'bg-surface border-2 border-outline-variant/40 text-on-surface-variant opacity-70'
                                             }`}>
                                             <span className="material-symbols-outlined text-[22px]">
                                                 {isPassed ? 'check' : step.icon}
