@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
-import toast from 'react-hot-toast';
 import { PRODUCT_TAG_PRESETS, getTagConfig } from '../data/products';
+import toast from 'react-hot-toast';
 
 const AdminPanel = () => {
     const {
@@ -439,15 +439,20 @@ const AdminPanel = () => {
                                         <div>
                                             <label className="block text-xs font-semibold mb-1">Etiket Rengi</label>
                                             <select
-                                                value={editingProduct.tag?.colorClass || TAG_COLORS[0].value}
-                                                onChange={e => setEditingProduct({
-                                                    ...editingProduct,
-                                                    tag: { ...(editingProduct.tag || {}), colorClass: e.target.value }
-                                                })}
-                                                className="w-full px-3 py-2 rounded-lg bg-surface border border-outline-variant/30 text-sm"
+                                                value={editingProduct?.tag?.label || 'Satışta'}
+                                                onChange={e => {
+                                                    const selectedPreset = getTagConfig(e.target.value);
+                                                    setEditingProduct({
+                                                        ...editingProduct,
+                                                        tag: selectedPreset || { label: e.target.value, icon: 'eco', colorClass: '' }
+                                                    });
+                                                }}
+                                                className="w-full px-3 py-2 rounded-lg bg-surface border border-outline-variant/30 text-sm cursor-pointer"
                                             >
-                                                {TAG_COLORS.map((c, i) => (
-                                                    <option key={i} value={c.value}>{c.label}</option>
+                                                {PRODUCT_TAG_PRESETS.map((preset) => (
+                                                    <option key={preset.label} value={preset.label}>
+                                                        {preset.label} {!preset.inStock ? '(Satışa Kapalı)' : ''}
+                                                    </option>
                                                 ))}
                                             </select>
                                         </div>
