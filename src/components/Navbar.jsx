@@ -7,17 +7,21 @@ const Navbar = () => {
     return (
         <nav className="fixed top-0 w-full z-40 bg-[#fbfbe2]/80 dark:bg-[#1b1d0e]/80 backdrop-blur-xl bg-gradient-to-b from-[#dbdcc3]/20 to-transparent">
             <div className="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
-                <div className="text-xl font-bold font-headline text-primary dark:text-[#fbfbe2] uppercase tracking-widest">
-                    Korkmaz Ceviz Çiftliği
-                </div>
+                <a href="#" className="flex items-center group">
+                    <img
+                        src="/LOGO.png"
+                        alt="Korkmaz Ceviz Çiftliği"
+                        className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+                    />
+                </a>
                 <div className="hidden md:flex space-x-8 font-headline tracking-tight text-lg">
                     <a className="text-primary dark:text-[#fbfbe2] opacity-80 hover:opacity-100 hover:text-secondary dark:hover:text-[#c9eea9] transition-all duration-300" href="#harvest-calendar">Hasat Takvimi</a>
                     <a className="text-primary dark:text-[#fbfbe2] opacity-80 hover:opacity-100 hover:text-secondary dark:hover:text-[#c9eea9] transition-all duration-300" href="#products">Ürünlerimiz</a>
                     <a className="text-primary dark:text-[#fbfbe2] opacity-80 hover:opacity-100 hover:text-secondary dark:hover:text-[#c9eea9] transition-all duration-300" href="#storage-guide">Saklama Rehberi</a>
                 </div>
                 <div className="flex items-center">
-                    <button 
-                        onClick={toggleCart} 
+                    <button
+                        onClick={toggleCart}
                         className="relative text-primary dark:text-[#fbfbe2] hover:text-secondary dark:hover:text-[#c9eea9] transition-all duration-300 scale-95 active:scale-90"
                     >
                         <span className="material-symbols-outlined" style={{ fontVariationSettings: "'FILL' 0" }}>shopping_bag</span>

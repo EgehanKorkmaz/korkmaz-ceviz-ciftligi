@@ -21,10 +21,15 @@ const ProductGrid = () => {
                     </p>
                 </div>
 
-                <div className="hidden md:grid md:grid-cols-3 gap-8">
-                    {/* Desktop View */}
+                {/* Desktop View */}
+                <div className="hidden md:flex md:flex-wrap md:justify-center gap-8">
                     {products.map(product => (
-                        <ProductCard key={`desk-${product.id}`} product={product} />
+                        <div
+                            key={`desk-${product.id}`}
+                            className="w-full md:w-[calc(33.333%-1.35rem)] max-w-[440px] flex"
+                        >
+                            <ProductCard product={product} />
+                        </div>
                     ))}
                 </div>
 

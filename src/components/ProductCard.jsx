@@ -7,7 +7,7 @@ import img1kg from '../images/ceviz1kg.png';
 import img3kg from '../images/ceviz3kg.png';
 import img5kg from '../images/ceviz5kg.png';
 
-const SackIcon = ({ size, weight, label, imageSrc, onClick, disabled }) => (
+const SackIcon = ({ size, weight, imageSrc, onClick, disabled }) => (
     <button
         type="button"
         disabled={disabled}
@@ -16,18 +16,17 @@ const SackIcon = ({ size, weight, label, imageSrc, onClick, disabled }) => (
             ? 'opacity-40 grayscale cursor-not-allowed'
             : 'cursor-pointer group active:scale-90 hover:scale-105'
             }`}
-        title={disabled ? 'Bu ürün şu an stokta yok' : `${label} Ekle (${weight}kg)`}
+        title={disabled ? 'Bu ürün şu an stokta yok' : `${weight} kg Ekle`}
     >
         <div
-            className="relative flex items-center justify-center bg-surface-container-lowest rounded-full p-2 mb-1.5 shadow-sm border border-outline-variant/20 group-hover:border-primary/50 group-hover:bg-primary-container transition-all duration-300"
+            className="relative flex items-center justify-center bg-surface-container-lowest rounded-full p-2.5 shadow-sm border border-outline-variant/20 group-hover:border-primary/50 group-hover:bg-primary-container transition-all duration-300"
             style={{ width: size + 16, height: size + 16 }}
         >
             <img src={imageSrc} alt={`${weight}kg Ceviz`} className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" />
-            <div className="absolute -bottom-1.5 bg-secondary text-on-primary text-[10px] font-bold px-1.5 py-0.5 rounded-full border-2 border-surface-container-lowest shadow-sm z-10">
-                +{weight}
+            <div className="absolute -bottom-2 bg-secondary text-on-primary text-xs font-bold px-2.5 py-0.5 rounded-full border-2 border-surface-container-lowest shadow-sm z-10 whitespace-nowrap">
+                +{weight} kg
             </div>
         </div>
-        <span className="text-xs font-semibold text-on-surface-variant group-hover:text-primary transition-colors">{label}</span>
     </button>
 );
 
@@ -94,28 +93,32 @@ const ProductCard = ({ product }) => {
                 )}
             </div>
 
-            <div className="p-5 flex-grow flex flex-col">
-                <h3 className="font-headline text-xl font-bold text-on-surface mb-1.5">{product.name}</h3>
-                <p className="font-body text-xs text-on-surface-variant mb-4 flex-grow leading-relaxed">{product.description}</p>
+            <div className="p-6 flex-grow flex flex-col">
+                <h3 className="font-headline text-2xl font-bold text-on-surface mb-2 tracking-tight">
+                    {product.name}
+                </h3>
+                <p className="font-body text-sm md:text-[15px] text-on-surface-variant mb-5 flex-grow leading-relaxed">
+                    {product.description}
+                </p>
 
-                <div className="flex items-center justify-between mb-3 pb-3 border-b border-outline-variant/15">
-                    <span className="font-body font-bold text-xl text-secondary">
-                        ₺{product.price} <span className="text-xs font-normal text-on-surface-variant">/{product.unit || 'kg'}</span>
+                <div className="flex items-center justify-between mb-4 pb-3.5 border-b border-outline-variant/20">
+                    <span className="font-headline font-extrabold text-2xl md:text-3xl text-secondary tracking-tight">
+                        ₺ {product.price} <span className="text-sm font-medium text-on-surface-variant">/{product.unit || 'kg'}</span>
                     </span>
-                    <span className={`font-body text-xs text-primary font-bold bg-secondary-container/40 px-2.5 py-1 rounded-md transition-all duration-300 ${tempWeight > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95'}`}>
+                    <span className={`font-body text-sm text-primary font-bold bg-secondary-container/50 px-3 py-1.5 rounded-lg transition-all duration-300 ${tempWeight > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
                         Toplam: ₺{product.price * tempWeight}
                     </span>
                 </div>
 
                 {/* Miktar Seçimi - Çuval İkonları */}
-                <div className="mb-4 bg-surface-container-low/50 p-3.5 rounded-xl border border-outline-variant/10">
-                    <label className="block font-body text-[11px] font-medium text-on-surface-variant mb-3 text-center">
+                <div className="mb-4 bg-surface-container-low/50 p-4 rounded-xl border border-outline-variant/10">
+                    <label className="block font-body text-xs md:text-sm font-semibold text-on-surface/80 mb-3.5 text-center tracking-wide">
                         {isAvailable ? 'Miktar Eklemek İçin Çuvallara Tıklayın' : 'Bu Ürün Şu An Temin Edilememektedir'}
                     </label>
-                    <div className="flex items-end justify-center gap-6 mb-2">
-                        <SackIcon size={48} weight={5} label="Büyük" imageSrc={img5kg} onClick={handleAddWeight} disabled={!isAvailable} />
-                        <SackIcon size={48} weight={3} label="Orta" imageSrc={img3kg} onClick={handleAddWeight} disabled={!isAvailable} />
-                        <SackIcon size={48} weight={1} label="Küçük" imageSrc={img1kg} onClick={handleAddWeight} disabled={!isAvailable} />
+                    <div className="flex items-center justify-center gap-5 sm:gap-7 mb-3 pt-1">
+                        <SackIcon size={80} weight={5} imageSrc={img5kg} onClick={handleAddWeight} disabled={!isAvailable} />
+                        <SackIcon size={80} weight={3} imageSrc={img3kg} onClick={handleAddWeight} disabled={!isAvailable} />
+                        <SackIcon size={80} weight={1} imageSrc={img1kg} onClick={handleAddWeight} disabled={!isAvailable} />
                     </div>
 
                     <div className="text-center font-body min-h-[32px] flex items-center justify-center">
