@@ -13,8 +13,8 @@ const SackIcon = ({ size, weight, label, imageSrc, onClick, disabled }) => (
         disabled={disabled}
         onClick={() => !disabled && onClick(weight)}
         className={`flex flex-col items-center justify-center transition-all duration-300 ${disabled
-                ? 'opacity-40 grayscale cursor-not-allowed'
-                : 'cursor-pointer group active:scale-90 hover:scale-105'
+            ? 'opacity-40 grayscale cursor-not-allowed'
+            : 'cursor-pointer group active:scale-90 hover:scale-105'
             }`}
         title={disabled ? 'Bu ürün şu an stokta yok' : `${label} Ekle (${weight}kg)`}
     >
@@ -151,10 +151,10 @@ const ProductCard = ({ product }) => {
                         onClick={handleAddToCart}
                         disabled={tempWeight === 0 || !isAvailable}
                         className={`w-full h-full font-body text-sm font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2 ${!isAvailable
-                                ? 'bg-surface-container-low text-outline border border-outline-variant/20 cursor-not-allowed opacity-60'
-                                : tempWeight > 0
-                                    ? 'bg-primary text-on-primary hover:bg-primary-container shadow-sm cursor-pointer active:scale-[0.99]'
-                                    : 'bg-surface-container-low text-outline border border-outline-variant/20 cursor-not-allowed opacity-75'
+                            ? 'bg-surface-container-low text-outline border border-outline-variant/20 cursor-not-allowed opacity-60'
+                            : tempWeight > 0
+                                ? 'bg-primary text-on-primary hover:bg-primary-container shadow-sm cursor-pointer active:scale-[0.99]'
+                                : 'bg-surface-container-low text-outline border border-outline-variant/20 cursor-not-allowed opacity-75'
                             }`}
                     >
                         <span className="material-symbols-outlined text-[18px]">

@@ -25,7 +25,7 @@ const Footer = () => {
                             Yol Tarifi Al
                         </a>
                         <span>•</span>
-                        <a className="hover:text-primary underline underline-offset-4 transition-colors" href="mailto:info@korkmazceviz.com">
+                        <a className="hover:text-primary underline underline-offset-4 transition-colors" href="mailto:info@korkmazceviz.com.tr">
                             info@korkmazceviz.com
                         </a>
                     </div>

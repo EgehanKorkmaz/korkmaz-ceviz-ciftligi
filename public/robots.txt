@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://korkmazceviz.com/sitemap.xml
+Sitemap: https://korkmazceviz.com.tr/sitemap.xml
