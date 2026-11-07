@@ -5,6 +5,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <meta name="google-site-verification" content="HGprSCc36iYI3ZlabtQUMhQ__jvGGFTPVN_54FWAvs4" />
+
   <!-- 1. Temel Google SEO Etiketleri -->
   <title>Korkmaz Ceviz Çiftliği | Susurluk Doğal Yaş ve Kuru Ceviz Satışı</title>
   <meta name="description"
@@ -33,38 +35,66 @@
   <link rel="stylesheet"
     href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 
-  <!-- 4. KRİTİK SEO SİLAHI: Google Haritalar ve Instagram'ı Siteye Bağlayan JSON-LD -->
+  <!-- 4. GELİŞMİŞ JSON-LD: Hem WebSite hem LocalBusiness Kimliği -->
   <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "LocalBusiness",
-      "name": "Korkmaz Ceviz Çiftliği",
-      "description": "Susurluk, Balıkesir'de doğal yaş ceviz, kuru ceviz ve özel hasat ceviz üretimi ve doğrudan satışı.",
-      "url": "https://korkmazceviz.com.tr/",
-      "telephone": "+905052149197",
-      "email": "info@korkmazceviz.com.tr",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Susurluk",
-        "addressRegion": "Balıkesir",
-        "addressCountry": "TR"
+    [
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "Korkmaz Ceviz Çiftliği",
+        "alternateName": ["Korkmaz Ceviz", "Susurluk Korkmaz Ceviz", "korkmazceviz.com.tr"],
+        "url": "https://korkmazceviz.com.tr/"
       },
-      "geo": {
-        "@type": "GeoCoordinates",
-        "latitude": 39.904093,
-        "longitude": 28.2254017
-      },
-      "hasMap": "https://www.google.com/maps/place/KORKMAZ+CEV%C4%B0Z+%C3%87%C4%B0FTL%C4%B0%C4%9E%C4%B0/@39.9040452,28.2198842,14.46z/data=!4m6!3m5!1s0x14b66b332a737317:0x78ff3fe85d87887!8m2!3d39.904093!4d28.2254017!16s%2Fg%2F11f5v08r0_?hl=tr",
-      "sameAs": [
-        "https://www.instagram.com/korkmaz_hasan_korkmaz/"
-      ],
-      "priceRange": "₺₺"
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "name": "Korkmaz Ceviz Çiftliği",
+        "alternateName": "Korkmaz Ceviz",
+        "description": "Balıkesir Susurluk'ta doğal yaş ceviz, ince kabuklu kuru ceviz ve Banaz cevizi üretimi yapan Korkmaz Ceviz Çiftliği resmi web sitesi.",
+        "url": "https://korkmazceviz.com.tr/",
+        "telephone": "+905052149197",
+        "email": "info@korkmazceviz.com.tr",
+        "address": {
+          "@type": "PostalAddress",
+          "addressLocality": "Susurluk",
+          "addressRegion": "Balıkesir",
+          "addressCountry": "TR"
+        },
+        "geo": {
+          "@type": "GeoCoordinates",
+          "latitude": 39.904093,
+          "longitude": 28.2254017
+        },
+        "hasMap": "https://www.google.com/maps/place/KORKMAZ+CEV%C4%B0Z+%C3%87%C4%B0FTL%C4%B0%C4%9E%C4%B0/@39.9040452,28.2198842,14.46z/data=!4m6!3m5!1s0x14b66b332a737317:0x78ff3fe85d87887!8m2!3d39.904093!4d28.2254017!16s%2Fg%2F11f5v08r0_?hl=tr",
+        "sameAs": [
+          "https://www.instagram.com/korkmaz_hasan_korkmaz/"
+        ],
+        "priceRange": "₺₺"
+      }
+    ]
     </script>
 </head>
 
 <body>
-  <div id="root"></div>
+  <!-- React yüklenene kadar Googlebot'un okuyacağı zengin SEO içeriği -->
+  <div id="root">
+    <main style="max-width: 800px; margin: 0 auto; padding: 2rem; font-family: sans-serif;">
+      <h1>Korkmaz Ceviz Çiftliği — Susurluk Doğal Yaş ve Kuru Ceviz</h1>
+      <p>
+        <strong>Korkmaz Ceviz</strong> (Korkmaz Ceviz Çiftliği), Balıkesir Susurluk'taki aile bahçemizden doğrudan
+        sofranıza
+        yeni mahsul yaş ceviz, ince kabuklu Susurluk kuru cevizi ve özel hasat Banaz cevizi sunar.
+      </p>
+      <h2>Korkmaz Ceviz Çeşitlerimiz</h2>
+      <ul>
+        <li><strong>Susurluk Yaş Ceviz:</strong> Yeşil kabuğundan yeni ayrılmış, süt beyazı taze ceviz.</li>
+        <li><strong>Susurluk Kuru Ceviz:</strong> Doğal güneşte kurutulmuş, ince kabuklu ve yüksek yağ oranlı yerli
+          ceviz.</li>
+        <li><strong>Banaz Cevizi:</strong> İri boyutu ve kendine has aromasıyla sınırlı üretim özel hasat ceviz.</li>
+      </ul>
+      <p>İletişim ve WhatsApp Sipariş: 0505 214 91 97 — Susurluk / Balıkesir</p>
+    </main>
+  </div>
   <script type="module" src="/src/main.jsx"></script>
 </body>
 
