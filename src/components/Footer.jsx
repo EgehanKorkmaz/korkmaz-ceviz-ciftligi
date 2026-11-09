@@ -1,4 +1,5 @@
 import React from 'react';
+import { FaInstagram } from 'react-icons/fa6';
 import DecryptedText from './DecryptedText';
 
 const Footer = () => {
@@ -17,16 +18,32 @@ const Footer = () => {
                         Susurluk, Balıkesir — Doğadan Sofranıza.
                     </p>
                     <div className="pt-2 flex flex-wrap items-center gap-4 text-xs font-semibold text-primary/80 dark:text-[#fbfbe2]/80">
-                        <a className="hover:text-primary underline underline-offset-4 transition-colors" href="https://www.instagram.com/korkmaz_hasan_korkmaz/" target="_blank" rel="noopener noreferrer">
-                            Instagram
+                        <a
+                            className="inline-flex items-center gap-1.5 hover:text-secondary transition-colors group"
+                            href="https://www.instagram.com/korkmaz_hasan_korkmaz/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <FaInstagram className="text-[15px] text-secondary group-hover:scale-110 transition-transform" />
+                            <span className="underline underline-offset-4">Instagram</span>
                         </a>
-                        <span>•</span>
-                        <a className="hover:text-primary underline underline-offset-4 transition-colors" href="https://www.google.com/maps/place/KORKMAZ+CEV%C4%B0Z+%C3%87%C4%B0FTL%C4%B0%C4%9E%C4%B0/@39.9040452,28.2198842,14.46z/data=!4m6!3m5!1s0x14b66b332a737317:0x78ff3fe85d87887!8m2!3d39.904093!4d28.2254017!16s%2Fg%2F11f5v08r0_?hl=tr" target="_blank" rel="noopener noreferrer">
-                            Yol Tarifi Al
+                        <span className="opacity-40">•</span>
+                        <a
+                            className="inline-flex items-center gap-1 hover:text-secondary transition-colors group"
+                            href="https://www.google.com/maps/place/KORKMAZ+CEV%C4%B0Z+%C3%87%C4%B0FTL%C4%B0%C4%9E%C4%B0/@39.9040452,28.2198842,14.46z/data=!4m6!3m5!1s0x14b66b332a737317:0x78ff3fe85d87887!8m2!3d39.904093!4d28.2254017!16s%2Fg%2F11f5v08r0_?hl=tr"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                        >
+                            <span className="material-symbols-outlined text-[16px] text-secondary group-hover:scale-110 transition-transform">location_on</span>
+                            <span className="underline underline-offset-4">Yol Tarifi Al</span>
                         </a>
-                        <span>•</span>
-                        <a className="hover:text-primary underline underline-offset-4 transition-colors" href="mailto:info@korkmazceviz.com.tr">
-                            info@korkmazceviz.com.tr
+                        <span className="opacity-40">•</span>
+                        <a
+                            className="inline-flex items-center gap-1.5 hover:text-secondary transition-colors group"
+                            href="mailto:info@korkmazceviz.com.tr"
+                        >
+                            <span className="material-symbols-outlined text-[16px] text-secondary group-hover:scale-110 transition-transform">mail</span>
+                            <span className="underline underline-offset-4">info@korkmazceviz.com.tr</span>
                         </a>
                     </div>
                     <p className="font-body text-[11px] text-primary/60 dark:text-[#fbfbe2]/60 pt-1">
