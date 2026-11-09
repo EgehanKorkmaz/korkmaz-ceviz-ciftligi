@@ -26,7 +26,7 @@ const Footer = () => {
                         </a>
                         <span>•</span>
                         <a className="hover:text-primary underline underline-offset-4 transition-colors" href="mailto:info@korkmazceviz.com.tr">
-                            info@korkmazceviz.com
+                            info@korkmazceviz.com.tr
                         </a>
                     </div>
                     <p className="font-body text-[11px] text-primary/60 dark:text-[#fbfbe2]/60 pt-1">

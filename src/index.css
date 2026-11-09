@@ -9,18 +9,7 @@
   }
 
   body {
-    @apply bg-surface text-on-surface antialiased;
-    font-family: 'Inter', sans-serif;
-  }
-
-  h1,
-  h2,
-  h3,
-  h4,
-  h5,
-  h6 {
-    font-family: 'Plus Jakarta Sans', sans-serif;
-    letter-spacing: -0.02em;
+    @apply bg-surface text-on-surface font-body antialiased;
   }
 }
 

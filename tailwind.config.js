@@ -63,9 +63,9 @@ export default {
         "full": "9999px"
       },
       fontFamily: {
-        headline: ["Noto Serif", "serif"],
-        body: ["Manrope", "sans-serif"],
-        label: ["Manrope", "sans-serif"]
+        headline: ["Newsreader", "serif"],
+        body: ["Plus Jakarta Sans", "sans-serif"],
+        label: ["Plus Jakarta Sans", "sans-serif"]
       }
     },
   },

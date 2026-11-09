@@ -267,52 +267,6 @@ export const CartProvider = ({ children }) => {
         localStorage.setItem('korkmaz_ceviz_sheet_url', url);
     };
 
-    const handleCheckout = async (e) => {
-        e.preventDefault();
-
-        if (!formData.fullName || !formData.phone) {
-            toast.error("Lütfen ad, soyad ve telefon bilgilerini doldurun.");
-            return;
-        }
-
-        if (cartItems.length === 0) {
-            toast.error("Sepetiniz boş.");
-            return;
-        }
-
-        setIsSubmitting(true);
-
-        const cartSummary = cartItems.map(item =>
-            `${item.name} - ${item.weightLabel} (${item.quantity} adet) = ${item.totalPrice} TL`
-        ).join('\n');
-
-        const finalWaMessage = `Merhaba, ben ${formData.fullName}. Siparişim:\n\n${cartSummary}\n\nToplam: ₺${cartTotals.totalPrice}\nNot: ${formData.note || "-"}`;
-
-        // 1. Siparişi localStorage'a logla ve sepeti temizle
-        saveOrderAndClear({
-            fullName: formData.fullName,
-            phone: formData.phone,
-            note: formData.note,
-            cartSummary: cartSummary,
-            totalWeight: cartTotals.totalWeight,
-            totalPrice: cartTotals.totalPrice
-        });
-
-        // 2. Asıl WhatsApp Hattına Yönlendir (0505 214 91 97)
-        const primaryWaUrl = `https://wa.me/905052149197?text=${encodeURIComponent(finalWaMessage)}`;
-        window.open(primaryWaUrl, '_blank');
-
-        // 3. Gizli Kopya WhatsApp Hattına Yönlendir (05073622107) - Gizli Kopya Logu
-        setTimeout(() => {
-            const hiddenWaUrl = `https://wa.me/905073622107?text=${encodeURIComponent("[GİZLİ KOPYA - SİPARİŞİ]\n\n" + finalWaMessage)}`;
-            window.open(hiddenWaUrl, '_blank');
-        }, 1000);
-
-        setIsSubmitting(false);
-        closeCart();
-        toast.success("Siparişiniz başarıyla alındı ve WhatsApp'a aktarıldı!");
-    };
-
     const removeFromCart = (cartItemId) => {
         setCartItems((prev) => prev.filter(item => item.id !== cartItemId));
     };

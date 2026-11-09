@@ -435,27 +435,6 @@ const AdminPanel = () => {
                                                 />
                                             </div>
                                         </div>
-
-                                        <div>
-                                            <label className="block text-xs font-semibold mb-1">Etiket Rengi</label>
-                                            <select
-                                                value={editingProduct?.tag?.label || 'Satışta'}
-                                                onChange={e => {
-                                                    const selectedPreset = getTagConfig(e.target.value);
-                                                    setEditingProduct({
-                                                        ...editingProduct,
-                                                        tag: selectedPreset || { label: e.target.value, icon: 'eco', colorClass: '' }
-                                                    });
-                                                }}
-                                                className="w-full px-3 py-2 rounded-lg bg-surface border border-outline-variant/30 text-sm cursor-pointer"
-                                            >
-                                                {PRODUCT_TAG_PRESETS.map((preset) => (
-                                                    <option key={preset.label} value={preset.label}>
-                                                        {preset.label} {!preset.inStock ? '(Satışa Kapalı)' : ''}
-                                                    </option>
-                                                ))}
-                                            </select>
-                                        </div>
                                     </div>
 
                                     <div className="flex justify-end gap-3 pt-2">
