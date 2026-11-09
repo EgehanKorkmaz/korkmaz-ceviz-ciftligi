@@ -9,7 +9,7 @@ const Navbar = () => {
             <div className="flex justify-between items-center w-full px-6 py-4 max-w-screen-2xl mx-auto">
                 <a href="#" className="flex items-center group">
                     <img
-                        src="/LOGO.png"
+                        src="/logo.png"
                         alt="Korkmaz Ceviz Çiftliği"
                         className="h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
                     />
