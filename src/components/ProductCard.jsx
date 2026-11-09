@@ -7,7 +7,7 @@ import img1kg from '../images/ceviz1kg.png';
 import img3kg from '../images/ceviz3kg.png';
 import img5kg from '../images/ceviz5kg.png';
 
-const SackIcon = ({ size, weight, imageSrc, onClick, disabled }) => (
+const SackIcon = ({ weight, imageSrc, onClick, disabled }) => (
     <button
         type="button"
         disabled={disabled}
@@ -18,12 +18,9 @@ const SackIcon = ({ size, weight, imageSrc, onClick, disabled }) => (
             }`}
         title={disabled ? 'Bu ürün şu an stokta yok' : `${weight} kg Ekle`}
     >
-        <div
-            className="relative flex items-center justify-center bg-surface-container-lowest rounded-full p-2.5 shadow-sm border border-outline-variant/20 group-hover:border-primary/50 group-hover:bg-primary-container transition-all duration-300"
-            style={{ width: size + 16, height: size + 16 }}
-        >
+        <div className="relative w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 flex items-center justify-center bg-surface-container-lowest rounded-full p-2 sm:p-2.5 shadow-sm border border-outline-variant/20 group-hover:border-primary/50 group-hover:bg-primary-container transition-all duration-300">
             <img src={imageSrc} alt={`${weight}kg Ceviz`} className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-110 drop-shadow-sm" />
-            <div className="absolute -bottom-2 bg-secondary text-on-primary text-xs font-bold px-2.5 py-0.5 rounded-full border-2 border-surface-container-lowest shadow-sm z-10 whitespace-nowrap">
+            <div className="absolute -bottom-2 bg-secondary text-on-primary text-[11px] sm:text-xs font-bold px-2 sm:px-2.5 py-0.5 rounded-full border-2 border-surface-container-lowest shadow-sm z-10 whitespace-nowrap">
                 +{weight} kg
             </div>
         </div>
@@ -79,71 +76,77 @@ const ProductCard = ({ product }) => {
 
     return (
         <div className={`w-full bg-surface-container-lowest rounded-2xl overflow-hidden shadow-[0_10px_35px_rgb(27,29,14,0.05)] border border-outline-variant/20 flex flex-col ${!isAvailable ? 'opacity-85' : ''}`}>
-            <div className="relative h-56 overflow-hidden group">
+            {/* Mobilde h-44 (daha kompakt), masaüstünde h-56 */}
+            <div className="relative h-44 md:h-56 overflow-hidden group">
                 <img
                     src={product.image}
                     alt={product.imageAlt || product.name}
                     className={`w-full h-full object-cover transition-transform duration-700 ${isAvailable ? 'group-hover:scale-105' : 'grayscale-[35%]'}`}
                 />
                 {tagInfo && tagInfo.label && (
-                    <div className={`absolute top-3.5 left-3.5 font-body text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 shadow-sm backdrop-blur-xs ${tagInfo.colorClass}`}>
+                    <div className={`absolute top-3 left-3 font-body text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5 shadow-sm backdrop-blur-xs ${tagInfo.colorClass}`}>
                         <span className="material-symbols-outlined text-[15px]">{tagInfo.icon}</span>
                         {tagInfo.label}
                     </div>
                 )}
             </div>
 
-            <div className="p-6 flex-grow flex flex-col">
-                <h3 className="font-headline text-2xl font-bold text-on-surface mb-2 tracking-tight">
-                    {product.name}
-                </h3>
-                <p className="font-body text-sm md:text-[15px] text-on-surface-variant mb-5 flex-grow leading-relaxed">
-                    {product.description}
-                </p>
+            {/* Mobilde p-4, masaüstünde p-6 */}
+            <div className="p-4 md:p-6 flex-grow flex flex-col justify-between">
+                <div>
+                    <h3 className="font-headline text-xl md:text-2xl font-bold text-on-surface mb-1.5 tracking-tight">
+                        {product.name}
+                    </h3>
+                    {/* Açıklama maksimum 2 satır olacak şekilde sabitlendi */}
+                    <p className="font-body text-xs sm:text-sm md:text-[15px] text-on-surface-variant mb-3.5 md:mb-5 leading-relaxed line-clamp-2 min-h-[40px] md:min-h-[48px]">
+                        {product.description}
+                    </p>
 
-                <div className="flex items-center justify-between mb-4 pb-3.5 border-b border-outline-variant/20">
-                    <span className="font-headline font-extrabold text-2xl md:text-3xl text-secondary tracking-tight">
-                        ₺ {product.price} <span className="text-sm font-medium text-on-surface-variant">/{product.unit || 'kg'}</span>
-                    </span>
-                    <span className={`font-body text-sm text-primary font-bold bg-secondary-container/50 px-3 py-1.5 rounded-lg transition-all duration-300 ${tempWeight > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
-                        Toplam: ₺{product.price * tempWeight}
-                    </span>
-                </div>
-
-                {/* Miktar Seçimi - Çuval İkonları */}
-                <div className="mb-4 bg-surface-container-low/50 p-4 rounded-xl border border-outline-variant/10">
-                    <label className="block font-body text-xs md:text-sm font-semibold text-on-surface/80 mb-3.5 text-center tracking-wide">
-                        {isAvailable ? 'Miktar Eklemek İçin Çuvallara Tıklayın' : 'Bu Ürün Şu An Temin Edilememektedir'}
-                    </label>
-                    <div className="flex items-center justify-center gap-5 sm:gap-7 mb-3 pt-1">
-                        <SackIcon size={80} weight={5} imageSrc={img5kg} onClick={handleAddWeight} disabled={!isAvailable} />
-                        <SackIcon size={80} weight={3} imageSrc={img3kg} onClick={handleAddWeight} disabled={!isAvailable} />
-                        <SackIcon size={80} weight={1} imageSrc={img1kg} onClick={handleAddWeight} disabled={!isAvailable} />
+                    <div className="flex items-center justify-between mb-3 md:mb-4 pb-2.5 md:pb-3.5 border-b border-outline-variant/20">
+                        <span className="font-headline font-extrabold text-2xl md:text-3xl text-secondary tracking-tight">
+                            ₺{product.price} <span className="text-xs md:text-sm font-medium text-on-surface-variant">/{product.unit || 'kg'}</span>
+                        </span>
+                        <span className={`font-body text-xs md:text-sm text-primary font-bold bg-secondary-container/50 px-2.5 py-1 rounded-lg transition-all duration-300 ${tempWeight > 0 ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'}`}>
+                            Toplam: ₺{product.price * tempWeight}
+                        </span>
                     </div>
 
-                    <div className="text-center font-body min-h-[32px] flex items-center justify-center">
-                        {tempWeight > 0 && isAvailable ? (
-                            <div className="flex items-center justify-center gap-2 animate-fadeIn">
-                                <span className="text-xs font-medium text-on-surface-variant">Seçilen: </span>
-                                <span className="text-xl font-black text-primary tracking-tight">{tempWeight} kg</span>
-                                <button
-                                    type="button"
-                                    onClick={handleSubtractWeight}
-                                    className="text-xs bg-error/10 text-error hover:bg-error hover:text-on-error w-7 h-7 rounded-full flex items-center justify-center font-bold transition-all shadow-xs ml-1 active:scale-95 cursor-pointer"
-                                    title="1kg Çıkar"
-                                >
-                                    -1
-                                </button>
-                                <button
-                                    type="button"
-                                    onClick={() => setTempWeight(0)}
-                                    className="text-xs bg-surface-variant/60 text-on-surface-variant hover:bg-error hover:text-on-error w-7 h-7 rounded-full flex items-center justify-center transition-all shadow-xs active:scale-95 cursor-pointer"
-                                    title="Seçimi Temizle"
-                                >
-                                    <span className="material-symbols-outlined text-[16px]">close</span>
-                                </button>
-                            </div>
-                        ) : null}
+                    {/* Miktar Seçimi - Çuval İkonları */}
+                    <div className="mb-3 md:mb-4 bg-surface-container-low/50 p-3 md:p-4 rounded-xl border border-outline-variant/10">
+                        {/* Yazı 2 satıra sığacak şekilde düzenlendi ve esnek yükseklik verildi */}
+                        <label className="block font-body text-xs md:text-sm font-semibold text-on-surface/80 mb-2.5 md:mb-3.5 text-center tracking-wide leading-tight min-h-[32px] flex items-center justify-center">
+                            {isAvailable ? 'Miktar Eklemek İçin Çuvallara Tıklayın' : 'Bu Ürün Şu An Temin Edilememektedir'}
+                        </label>
+                        <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-7 mb-2 pt-0.5">
+                            <SackIcon weight={5} imageSrc={img5kg} onClick={handleAddWeight} disabled={!isAvailable} />
+                            <SackIcon weight={3} imageSrc={img3kg} onClick={handleAddWeight} disabled={!isAvailable} />
+                            <SackIcon weight={1} imageSrc={img1kg} onClick={handleAddWeight} disabled={!isAvailable} />
+                        </div>
+
+                        <div className="text-center font-body min-h-[32px] flex items-center justify-center">
+                            {tempWeight > 0 && isAvailable ? (
+                                <div className="flex items-center justify-center gap-2 animate-fadeIn">
+                                    <span className="text-xs font-medium text-on-surface-variant">Seçilen: </span>
+                                    <span className="text-xl font-black text-primary tracking-tight">{tempWeight} kg</span>
+                                    <button
+                                        type="button"
+                                        onClick={handleSubtractWeight}
+                                        className="text-xs bg-error/10 text-error hover:bg-error hover:text-on-error w-7 h-7 rounded-full flex items-center justify-center font-bold transition-all shadow-xs ml-1 active:scale-95 cursor-pointer"
+                                        title="1kg Çıkar"
+                                    >
+                                        -1
+                                    </button>
+                                    <button
+                                        type="button"
+                                        onClick={() => setTempWeight(0)}
+                                        className="text-xs bg-surface-variant/60 text-on-surface-variant hover:bg-error hover:text-on-error w-7 h-7 rounded-full flex items-center justify-center transition-all shadow-xs active:scale-95 cursor-pointer"
+                                        title="Seçimi Temizle"
+                                    >
+                                        <span className="material-symbols-outlined text-[16px]">close</span>
+                                    </button>
+                                </div>
+                            ) : null}
+                        </div>
                     </div>
                 </div>
 
