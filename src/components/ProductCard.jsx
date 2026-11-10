@@ -94,15 +94,14 @@ const ProductCard = ({ product }) => {
             {/* Mobilde p-4, masaüstünde p-6 */}
             <div className="p-4 md:p-6 flex-grow flex flex-col justify-between">
                 <div>
-                    <h3 className="font-headline text-xl md:text-2xl font-bold text-on-surface mb-1.5 tracking-tight">
+                    <h3 className="font-headline text-xl md:text-2xl font-bold text-on-surface mb-1.5 tracking-tight line-clamp-1">
                         {product.name}
                     </h3>
-                    {/* Açıklama maksimum 2 satır olacak şekilde sabitlendi */}
-                    <p className="font-body text-xs sm:text-sm md:text-[15px] text-on-surface-variant mb-3.5 md:mb-5 leading-relaxed line-clamp-2 min-h-[40px] md:min-h-[48px]">
+                    <p className="font-body text-xs sm:text-sm md:text-[15px] text-on-surface-variant mb-3.5 md:mb-5 line-clamp-2 min-h-[2.5rem] md:min-h-[2.85rem] leading-relaxed">
                         {product.description}
                     </p>
 
-                    <div className="flex items-center justify-between mb-3 md:mb-4 pb-2.5 md:pb-3.5 border-b border-outline-variant/20">
+                    <div className="flex items-center justify-between mb-3 md:mb-4 pb-2.5 md:pb-3.5 border-b border-outline-variant/20 mt-auto">
                         <span className="font-headline font-extrabold text-2xl md:text-3xl text-secondary tracking-tight">
                             ₺{product.price} <span className="text-xs md:text-sm font-medium text-on-surface-variant">/{product.unit || 'kg'}</span>
                         </span>
@@ -113,9 +112,12 @@ const ProductCard = ({ product }) => {
 
                     {/* Miktar Seçimi - Çuval İkonları */}
                     <div className="mb-3 md:mb-4 bg-surface-container-low/50 p-3 md:p-4 rounded-xl border border-outline-variant/10">
-                        {/* Yazı 2 satıra sığacak şekilde düzenlendi ve esnek yükseklik verildi */}
-                        <label className="block font-body text-xs md:text-sm font-semibold text-on-surface/80 mb-2.5 md:mb-3.5 text-center tracking-wide leading-tight min-h-[32px] flex items-center justify-center">
-                            {isAvailable ? 'Miktar Eklemek İçin Çuvallara Tıklayın' : 'Bu Ürün Şu An Temin Edilememektedir'}
+                        <label className="flex items-center justify-center font-body text-xs md:text-sm font-semibold text-on-surface/80 mb-2.5 md:mb-3.5 text-center tracking-wide leading-snug min-h-[2.25rem]">
+                            {isAvailable ? (
+                                <span>Miktar Eklemek İçin<br />Çuvallara Tıklayın</span>
+                            ) : (
+                                <span>Bu Ürün Şu An<br />Temin Edilememektedir</span>
+                            )}
                         </label>
                         <div className="flex items-center justify-center gap-3 sm:gap-5 md:gap-7 mb-2 pt-0.5">
                             <SackIcon weight={5} imageSrc={img5kg} onClick={handleAddWeight} disabled={!isAvailable} />

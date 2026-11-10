@@ -47,17 +47,17 @@ const HarvestCalendar = () => {
     const currentMonthName = new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(new Date());
 
     return (
-        <section id="harvest-calendar" className="w-full py-14 px-6 max-w-screen-2xl mx-auto">
+        <section id="harvest-calendar" className="w-full py-8 md:py-14 px-6 max-w-screen-2xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
 
                 {/* Otomatik Hasat Takvimi */}
-                <div className="lg:col-span-8 bg-surface-container-lowest rounded-2xl p-6 md:p-10 shadow-[0_15px_50px_rgb(27,29,14,0.05)] border border-outline-variant/20 relative overflow-hidden flex flex-col justify-between">
+                <div className="lg:col-span-8 bg-surface-container-lowest rounded-2xl p-5 md:p-10 shadow-[0_15px_50px_rgb(27,29,14,0.05)] border border-outline-variant/20 relative overflow-hidden flex flex-col justify-between">
                     <div className="absolute top-0 right-0 w-56 h-56 bg-surface-dim rounded-bl-[100%] opacity-20 -z-10"></div>
 
-                    <div className="flex flex-wrap items-center justify-between gap-2 mb-8">
+                    <div className="flex flex-wrap items-center justify-between gap-2 mb-4 md:mb-8">
                         <div>
                             <h2 className="font-headline text-2xl md:text-3xl font-bold text-on-surface">Canlı Hasat Takvimi</h2>
-                            <p className="text-xs text-on-surface-variant mt-1">Takvim bulunduğumuz aya göre otomatik güncellenir.</p>
+                            <p className="text-xs text-on-surface-variant mt-0.5">Takvim bulunduğumuz aya göre otomatik güncellenir.</p>
                         </div>
                         <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-secondary-container/50 text-on-secondary-container px-3 py-1.5 rounded-full border border-secondary/20">
                             <span className="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
@@ -65,17 +65,24 @@ const HarvestCalendar = () => {
                         </span>
                     </div>
 
-                    <div className="relative my-auto py-4">
-                        {/* Arka Plan Çizgisi (Masaüstü) */}
+                    <div className="relative my-auto py-2 md:py-4">
+                        {/* Arka Plan Çizgisi (Masaüstü - Yatay) */}
                         <div className="absolute top-10 left-0 w-full h-1 bg-outline-variant/20 hidden md:block rounded-full overflow-hidden">
-                            {/* Aktif Adıma Kadar Dolan Yeşil Çizgi */}
                             <div
                                 className="h-full bg-secondary transition-all duration-700 ease-out"
                                 style={{ width: `${((activeStepIndex + 0.5) / HARVEST_STEPS.length) * 100}%` }}
                             ></div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+                        {/* Arka Plan Çizgisi (Mobil - Dikey) */}
+                        <div className="absolute top-6 bottom-6 left-[29px] w-1 bg-outline-variant/25 md:hidden rounded-full overflow-hidden">
+                            <div
+                                className="w-full bg-secondary transition-all duration-700 ease-out"
+                                style={{ height: `${((activeStepIndex + 0.5) / HARVEST_STEPS.length) * 100}%` }}
+                            ></div>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-4 gap-2.5 md:gap-6">
                             {HARVEST_STEPS.map((step, index) => {
                                 const isActive = index === activeStepIndex;
                                 const isPassed = index < activeStepIndex;
@@ -83,38 +90,41 @@ const HarvestCalendar = () => {
                                 return (
                                     <div
                                         key={step.id}
-                                        className={`relative flex md:flex-col items-center md:text-center gap-4 md:gap-0 p-3 md:p-0 rounded-xl transition-all duration-300 ${isActive ? 'bg-secondary-container/20 md:bg-transparent border border-secondary/30 md:border-0' : ''
+                                        className={`relative flex md:flex-col items-center md:text-center gap-3.5 md:gap-0 p-2 md:p-0 rounded-xl transition-all duration-300 ${isActive ? 'bg-secondary-container/25 md:bg-transparent border border-secondary/30 md:border-0' : ''
                                             }`}
                                     >
                                         {/* İkon Dairesi */}
-                                        <div className={`w-12 h-12 rounded-full flex items-center justify-center z-10 md:mb-4 shrink-0 transition-all duration-500 ${isActive
-                                            ? 'bg-secondary text-on-primary shadow-lg ring-4 ring-secondary/20 scale-110'
+                                        <div className={`w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center z-10 md:mb-4 shrink-0 transition-all duration-500 ${isActive
+                                            ? 'bg-secondary text-on-primary shadow-md ring-4 ring-secondary/20 scale-105 md:scale-110'
                                             : isPassed
                                                 ? 'bg-surface border-2 border-secondary text-secondary'
-                                                : 'bg-surface border-2 border-outline-variant/40 text-on-surface-variant opacity-70'
+                                                : 'bg-surface border-2 border-outline-variant/40 text-on-surface-variant'
                                             }`}>
-                                            <span className="material-symbols-outlined text-[22px]">
+                                            <span className="material-symbols-outlined text-[20px] md:text-[22px]">
                                                 {isPassed ? 'check' : step.icon}
                                             </span>
                                         </div>
 
                                         {/* Metin Alanı */}
-                                        <div>
-                                            <div className="flex items-center md:justify-center gap-1.5 mb-0.5">
-                                                <h4 className={`font-headline font-bold text-base ${isActive ? 'text-primary' : 'text-on-surface'}`}>
+                                        <div className="flex-1">
+                                            <div className="flex items-center md:justify-center gap-1.5">
+                                                <h4 className={`font-headline font-bold text-sm md:text-base ${isActive ? 'text-primary' : 'text-on-surface'}`}>
                                                     {step.title}
                                                 </h4>
+                                                <span className={`font-body text-[11px] md:hidden font-semibold ${isActive || isPassed ? 'text-secondary' : 'text-on-surface-variant'}`}>
+                                                    • {step.period}
+                                                </span>
                                                 {isActive && (
-                                                    <span className="text-[10px] font-bold uppercase tracking-wider bg-secondary text-on-primary px-1.5 py-0.5 rounded md:hidden">
+                                                    <span className="text-[10px] font-bold uppercase tracking-wider bg-secondary text-on-primary px-1.5 py-0.5 rounded ml-auto md:hidden">
                                                         Aktif
                                                     </span>
                                                 )}
                                             </div>
-                                            <p className={`font-body text-xs font-semibold mb-1 ${isActive || isPassed ? 'text-secondary' : 'text-on-surface-variant'
+                                            <p className={`hidden md:block font-body text-xs font-semibold mb-1 ${isActive || isPassed ? 'text-secondary' : 'text-on-surface-variant'
                                                 }`}>
                                                 {step.period}
                                             </p>
-                                            <p className="font-body text-xs text-on-surface-variant leading-relaxed">
+                                            <p className="font-body text-xs text-on-surface-variant leading-snug md:leading-relaxed mt-0.5">
                                                 {step.desc}
                                             </p>
                                         </div>

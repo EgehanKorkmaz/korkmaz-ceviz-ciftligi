@@ -43,7 +43,7 @@ const ProductGrid = () => {
                         className="!pb-12"
                     >
                         {products.map(product => (
-                            <SwiperSlide key={`mob-${product.id}`}>
+                            <SwiperSlide key={`mob-${product.id}`} className="!h-auto flex">
                                 <ProductCard product={product} />
                             </SwiperSlide>
                         ))}
