@@ -10,11 +10,11 @@ const Navbar = () => {
     return (
         <nav className="fixed top-0 w-full z-40 bg-[#fbfbe2]/90 dark:bg-[#1b1d0e]/90 backdrop-blur-xl border-b border-outline-variant/15">
             <div className="flex justify-between items-center w-full px-5 md:px-6 py-3 md:py-4 max-w-screen-2xl mx-auto">
-                <a href="#" onClick={closeMobileMenu} className="flex items-center group py-0.5">
+                <a href="#" onClick={closeMobileMenu} className="flex items-center group py-1">
                     <img
                         src="/logo_yatay.png"
                         alt="Korkmaz Ceviz Çiftliği"
-                        className="h-11 sm:h-14 md:h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
+                        className="h-14 sm:h-16 md:h-20 lg:h-22 w-auto object-contain transition-transform duration-300 group-hover:scale-[1.03]"
                     />
                 </a>
 

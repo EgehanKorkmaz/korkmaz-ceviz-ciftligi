@@ -27,7 +27,7 @@ function App() {
           }}
         />
         <Navbar />
-        <main className="flex-grow pt-24">
+        <main className="flex-grow pt-24 md:pt-28">
           <Hero />
           <ProductGrid />
           <HarvestCalendar />
