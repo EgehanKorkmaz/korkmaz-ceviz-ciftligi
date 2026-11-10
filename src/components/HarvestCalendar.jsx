@@ -44,8 +44,6 @@ const HarvestCalendar = () => {
         return idx !== -1 ? idx : 0;
     }, [currentMonth]);
 
-    const currentMonthName = new Intl.DateTimeFormat('tr-TR', { month: 'long' }).format(new Date());
-
     return (
         <section id="harvest-calendar" className="w-full py-8 md:py-14 px-6 max-w-screen-2xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
@@ -57,12 +55,8 @@ const HarvestCalendar = () => {
                     <div className="flex flex-wrap items-center justify-between gap-2 mb-4 md:mb-8">
                         <div>
                             <h2 className="font-headline text-2xl md:text-3xl font-bold text-on-surface">Canlı Hasat Takvimi</h2>
-                            <p className="text-xs text-on-surface-variant mt-0.5">Takvim bulunduğumuz aya göre otomatik güncellenir.</p>
                         </div>
-                        <span className="inline-flex items-center gap-1.5 text-xs font-semibold bg-secondary-container/50 text-on-secondary-container px-3 py-1.5 rounded-full border border-secondary/20">
-                            <span className="w-2 h-2 rounded-full bg-secondary animate-ping"></span>
-                            Şu An: {currentMonthName} ({HARVEST_STEPS[activeStepIndex].title} Dönemi)
-                        </span>
+
                     </div>
 
                     <div className="relative my-auto py-2 md:py-4">
@@ -94,15 +88,27 @@ const HarvestCalendar = () => {
                                             }`}
                                     >
                                         {/* İkon Dairesi */}
-                                        <div className={`w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center z-10 md:mb-4 shrink-0 transition-all duration-500 ${isActive
-                                            ? 'bg-secondary text-on-primary shadow-md ring-4 ring-secondary/20 scale-105 md:scale-110'
-                                            : isPassed
-                                                ? 'bg-surface border-2 border-secondary text-secondary'
-                                                : 'bg-surface border-2 border-outline-variant/40 text-on-surface-variant'
-                                            }`}>
-                                            <span className="material-symbols-outlined text-[20px] md:text-[22px]">
-                                                {isPassed ? 'check' : step.icon}
-                                            </span>
+                                        <div className={`relative w-11 h-11 md:w-12 md:h-12 rounded-full flex items-center justify-center z-10 md:mb-4 shrink-0 transition-all duration-500 ${isActive ? 'scale-110 md:scale-125' : ''}`}>
+
+                                            {/* Dalga (Ripple) Efekti - Sadece aktif adımda sürekli yayılır */}
+                                            {isActive && (
+                                                <span
+                                                    className="absolute inset-0 rounded-full bg-secondary opacity-60 animate-ping"
+                                                    style={{ animationDuration: '2.5s' }}
+                                                ></span>
+                                            )}
+
+                                            {/* Ana İkon */}
+                                            <div className={`relative z-10 w-full h-full rounded-full flex items-center justify-center transition-all duration-500 ${isActive
+                                                ? 'bg-secondary text-on-primary shadow-lg ring-4 ring-secondary-container/90'
+                                                : isPassed
+                                                    ? 'bg-surface border-2 border-secondary text-secondary'
+                                                    : 'bg-surface border-2 border-outline-variant/40 text-on-surface-variant'
+                                                }`}>
+                                                <span className="material-symbols-outlined text-[20px] md:text-[22px]">
+                                                    {isPassed ? 'check' : step.icon}
+                                                </span>
+                                            </div>
                                         </div>
 
                                         {/* Metin Alanı */}

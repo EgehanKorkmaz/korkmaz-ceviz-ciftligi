@@ -66,6 +66,16 @@ export default {
         headline: ["Newsreader", "serif"],
         body: ["Plus Jakarta Sans", "sans-serif"],
         label: ["Plus Jakarta Sans", "sans-serif"]
+      },
+      keyframes: {
+        ripple: {
+          '0%': { boxShadow: '0 0 0 0 rgba(72, 103, 48, 0.4)' },
+          '70%': { boxShadow: '0 0 0 15px rgba(72, 103, 48, 0)' },
+          '100%': { boxShadow: '0 0 0 0 rgba(72, 103, 48, 0)' },
+        }
+      },
+      animation: {
+        'ripple': 'ripple 2s infinite cubic-bezier(0.66, 0, 0, 1)',
       }
     },
   },

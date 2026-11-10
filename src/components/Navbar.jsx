@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useCart } from '../context/CartContext';
+import { motion, AnimatePresence } from 'framer-motion';
 
 const Navbar = () => {
     const { toggleCart, cartTotals } = useCart();
@@ -43,45 +44,61 @@ const Navbar = () => {
                     <button
                         type="button"
                         onClick={() => setIsMobileMenuOpen(prev => !prev)}
-                        className="md:hidden p-2 text-primary dark:text-[#fbfbe2] hover:text-secondary transition-colors cursor-pointer"
+                        className="md:hidden p-2 text-primary dark:text-[#fbfbe2] hover:text-secondary transition-colors cursor-pointer flex items-center justify-center"
                         aria-label="Menüyü Aç/Kapat"
                     >
-                        <span className="material-symbols-outlined text-[28px]">
-                            {isMobileMenuOpen ? 'close' : 'menu'}
-                        </span>
+                        <motion.div
+                            animate={{ rotate: isMobileMenuOpen ? 180 : 0, scale: isMobileMenuOpen ? 1.1 : 1 }}
+                            transition={{ duration: 0.3, ease: "easeInOut" }}
+                            className="flex items-center justify-center"
+                        >
+                            <span className="material-symbols-outlined text-[28px]">
+                                {isMobileMenuOpen ? 'close' : 'menu'}
+                            </span>
+                        </motion.div>
                     </button>
                 </div>
             </div>
 
             {/* Mobil Açılır Menü (Hamburger İçeriği) */}
-            {isMobileMenuOpen && (
-                <div className="md:hidden bg-[#fbfbe2] dark:bg-[#1b1d0e] border-b border-outline-variant/25 px-6 py-5 space-y-4 font-headline text-lg shadow-lg">
-                    <a
-                        href="#products"
-                        onClick={closeMobileMenu}
-                        className="flex items-center gap-3 text-primary dark:text-[#fbfbe2] py-2 border-b border-outline-variant/15"
+            <AnimatePresence>
+                {isMobileMenuOpen && (
+                    <motion.div
+                        initial={{ height: 0, opacity: 0 }}
+                        animate={{ height: 'auto', opacity: 1 }}
+                        exit={{ height: 0, opacity: 0 }}
+                        transition={{ duration: 0.3, ease: 'easeInOut' }}
+                        className="md:hidden bg-[#fbfbe2] dark:bg-[#1b1d0e] border-b border-outline-variant/25 font-headline text-lg shadow-lg overflow-hidden"
                     >
-                        <span className="material-symbols-outlined text-secondary text-[20px]">inventory_2</span>
-                        Ürünlerimiz
-                    </a>
-                    <a
-                        href="#harvest-calendar"
-                        onClick={closeMobileMenu}
-                        className="flex items-center gap-3 text-primary dark:text-[#fbfbe2] py-2 border-b border-outline-variant/15"
-                    >
-                        <span className="material-symbols-outlined text-secondary text-[20px]">calendar_month</span>
-                        Hasat Takvimi
-                    </a>
-                    <a
-                        href="#storage-guide"
-                        onClick={closeMobileMenu}
-                        className="flex items-center gap-3 text-primary dark:text-[#fbfbe2] py-2"
-                    >
-                        <span className="material-symbols-outlined text-secondary text-[20px]">kitchen</span>
-                        Saklama Rehberi
-                    </a>
-                </div>
-            )}
+                        <div className="px-6 py-5 space-y-4">
+                            <a
+                                href="#products"
+                                onClick={closeMobileMenu}
+                                className="flex items-center gap-3 text-primary dark:text-[#fbfbe2] py-2 border-b border-outline-variant/15"
+                            >
+                                <span className="material-symbols-outlined text-secondary text-[20px]">inventory_2</span>
+                                Ürünlerimiz
+                            </a>
+                            <a
+                                href="#harvest-calendar"
+                                onClick={closeMobileMenu}
+                                className="flex items-center gap-3 text-primary dark:text-[#fbfbe2] py-2 border-b border-outline-variant/15"
+                            >
+                                <span className="material-symbols-outlined text-secondary text-[20px]">calendar_month</span>
+                                Hasat Takvimi
+                            </a>
+                            <a
+                                href="#storage-guide"
+                                onClick={closeMobileMenu}
+                                className="flex items-center gap-3 text-primary dark:text-[#fbfbe2] py-2"
+                            >
+                                <span className="material-symbols-outlined text-secondary text-[20px]">kitchen</span>
+                                Saklama Rehberi
+                            </a>
+                        </div>
+                    </motion.div>
+                )}
+            </AnimatePresence>
         </nav>
     );
 };
