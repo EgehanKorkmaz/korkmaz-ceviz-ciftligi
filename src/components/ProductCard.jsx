@@ -101,7 +101,8 @@ const ProductCard = ({ product }) => {
                         {product.description}
                     </p>
 
-                    <div className="flex items-center justify-between mb-3 md:mb-4 pb-2.5 md:pb-3.5 border-b border-outline-variant/20 mt-auto">
+                    {/* FİYAT BÖLÜMÜ - data-nosnippet eklendi */}
+                    <div data-nosnippet className="flex items-center justify-between mb-3 md:mb-4 pb-2.5 md:pb-3.5 border-b border-outline-variant/20 mt-auto">
                         <span className="font-headline font-extrabold text-2xl md:text-3xl text-secondary tracking-tight">
                             ₺{product.price} <span className="text-xs md:text-sm font-medium text-on-surface-variant">/{product.unit || 'kg'}</span>
                         </span>
@@ -110,8 +111,8 @@ const ProductCard = ({ product }) => {
                         </span>
                     </div>
 
-                    {/* Miktar Seçimi - Çuval İkonları */}
-                    <div className="mb-3 md:mb-4 bg-surface-container-low/50 p-3 md:p-4 rounded-xl border border-outline-variant/10">
+                    {/* MİKTAR SEÇİMİ (ÇUVALLAR) - data-nosnippet eklendi */}
+                    <div data-nosnippet className="mb-3 md:mb-4 bg-surface-container-low/50 p-3 md:p-4 rounded-xl border border-outline-variant/10">
                         <label className="flex items-center justify-center font-body text-xs md:text-sm font-semibold text-on-surface/80 mb-2.5 md:mb-3.5 text-center tracking-wide leading-snug min-h-[2.25rem]">
                             {isAvailable ? (
                                 <span>Miktar Eklemek İçin<br />Çuvallara Tıklayın</span>
